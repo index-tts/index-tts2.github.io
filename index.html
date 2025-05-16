@@ -1,0 +1,610 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>IndexTTS2: A Breakthrough in Emotionally Expressive and Duration-Controlled Auto-Regressive Zero-Shot Text-to-Speech</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+    <!-- Page 1 -->
+    <div class="container" id="section1">
+        <h1>IndexTTS2: A Breakthrough in Emotionally Expressive and Duration-Controlled Auto-Regressive Zero-Shot Text-to-Speech</h1>
+        <div class="author">
+            <p>Index SpeechTeam</p>
+        </div>
+
+        <!-- contents -->
+        <h2>Contents</h2>
+        <ul>
+        <li><a href="#section1">1 Paper Introduction</a></li>
+        <li><a href="#section2">2 Controllability: Emotionally Expressive Speech Generation</a></li>
+            <ul>
+                <li><a href="#section2.1">2.1 Using Identical Prompt</a></li>
+                <li><a href="#section2.2">2.2 Using Different Prompts</a></li>
+                <!--<li><a href="#section2.3">2.3 Using Textual Description</a></li>-->
+            </ul>
+
+        <li><a href="#section3">3 Zero-Shot TTS Comparison With Others(Open-source data)</a></li>
+            <ul>
+                <li><a href="#section3.1">3.1 Monolingual Speech Synthesis</a></li>
+                <!--<li><a href="#section3.2">3.2 Cross-Lingual Speech Synthesis</a></li>-->
+            </ul>
+        </ul>
+
+        <!-- paper -->
+        <div class="paper-section">
+            <h2>1 Paper Introduction</h2>
+            <p class="paper-description">
+                <Strong>Abstract:</strong> 
+                Large-scale text-to-speech (TTS)  models are typically categorized into autoregressive and non-autoregressive systems. Although autoregressive systems exhibit certain advantages in speech naturalness, their token-by-token generation mechanism makes it difficult to precisely control the duration of the synthesized speech. This becomes a significant limitation in applications such as video dubbing, where strict audio-visual synchronization is required. This paper introduces IndexTTS2, which proposes a novel, general, and autoregressive-model-friendly method for speech duration control. The method supports two generation modes: one allows explicit specification of the number of generated tokens, thereby enabling precise control over speech duration; the other does not require manual token count input, letting the model freely generate speech in an autoregressive manner while faithfully reproducing prosodic characteristics from the input prompt. Furthermore, IndexTTS2 achieves disentanglement between emotional expression and speaker identity, enabling independent control of timbre and emotion. In the zero-shot setting, the model is capable of perfectly reproducing the emotional characteristics inherent in the input prompt. Additionally, users may provide a separate emotion prompt (which can originate from a different speaker than the timbre prompt), thereby enabling the model to accurately reconstruct the target timbre while conveying the specified emotional tone. In order to enhance the clarity of speech during strong emotional expressions, we incorporate GPT latent representations to improve the stability of the generated speech. Meanwhile, to lower the barrier for emotion control, we design a soft instruction mechanism based on textual descriptions by fine-tuning Qwen3. This facilitates the effective guidance of speech generation with the desired emotional tendencies through natural language input. Finally, experimental results on multiple datasets demonstrate that IndexTTS2 outperforms existing state-of-the-art zero-shot TTS models in terms of word error rate, speaker similarity, and emotional fidelity. To promote further research and facilitate practical adoption, we will release both the model weights and inference code, enabling the community to reproduce and build upon our work.
+            </p>
+        </div>
+    </div>
+
+    <!-- Demo Section -->
+
+    <!-- page 2 -->
+    <div class="container" id="section2">
+        <h2>2 Controllability: Emotionally Expressive Speech Generation</h2>
+
+        <h3 id="section2.1">2.1 Using Identical Prompt</h3>
+        <h4>We use the <font color="red">same audio prompt</font> across all input conditions, meaning that the reference for both timbre and emotion is based on the exact same audio content. This design ensures that any variation in the generated speech comes purely from the target emotion or timbre, eliminating confounding factors introduced by using different emotional prompts from other timbres.</h4>
+        <div class="demo-section">
+            <div class="table-container">
+                <table>
+                    <tr>
+                        <th style="width:50px">Emotion</th>
+                        <th>Timbre-Audio-Prompt</th>
+                        <th>Emotion-Audio-Prompt</th>
+                        <th style="min-width:200px;">Text</th>
+                        <th>IndexTTS2</th>
+                        <th>IndexTTS2-wog</th>
+                        <th>IndexTTS2-wos2m</th>
+                        <th>IndexTTS</th>
+                        <th>MaskGCT</th>
+                        <th>CosyVoice2</th>
+                        <th>SparkTTS</th>
+                        <th>F5-TTS</th>
+                    </tr>
+                    
+                    <tr>
+                        <td rowspan="2">Calm</td>
+                        <td colspan="2"> <div class="demo-item"><audio controls><source src="ex1/prompt/07_calm_3.wav" type="audio/wav"></audio></div></td>
+                        <td>攀爬上官场高位后，开始给家里的各种亲戚安排工作。</td>
+                        <td><div class="demo-item"><audio controls><source src="ex1/out/indextts2/527.wav" type="audio/wav"></audio></div></td>
+                        <td><div class="demo-item"><audio controls><source src="ex1/out/indextts2_wog/527.wav" type="audio/wav"></audio></div></td>
+                        <td><div class="demo-item"><audio controls><source src="ex1/out/indextts2_wos2m/527.wav" type="audio/wav"></audio></div></td>
+                        <td><div class="demo-item"><audio controls><source src="ex1/out/indextts/527.wav" type="audio/wav"></audio></div></td>
+                        <td><div class="demo-item"><audio controls><source src="ex1/out/maskgct/527.wav" type="audio/wav"></audio></div></td>
+                        <td><div class="demo-item"><audio controls><source src="ex1/out/cosyvoice2/527.wav" type="audio/wav"></audio></div></td>
+                        <td><div class="demo-item"><audio controls><source src="ex1/out/sparktts/527.wav" type="audio/wav"></audio></div></td>
+                        <td><div class="demo-item"><audio controls><source src="ex1/out/f5/527.wav" type="audio/wav"></audio></div></td>
+                    </tr>
+                    <tr>
+                        <td colspan="2"> <div class="demo-item"><audio controls><source src="ex1/prompt/06_calm_2.wav" type="audio/wav"></audio></div></td>
+                        <td>近日，除了葛洲坝股价下跌外，其余三家均有不同程度的上涨。</td>
+                        <td><div class="demo-item"><audio controls><source src="ex1/out/indextts2/439.wav" type="audio/wav"></audio></div></td>
+                        <td><div class="demo-item"><audio controls><source src="ex1/out/indextts2_wog/439.wav" type="audio/wav"></audio></div></td>
+                        <td><div class="demo-item"><audio controls><source src="ex1/out/indextts2_wos2m/439.wav" type="audio/wav"></audio></div></td>
+                        <td><div class="demo-item"><audio controls><source src="ex1/out/indextts/439.wav" type="audio/wav"></audio></div></td>
+                        <td><div class="demo-item"><audio controls><source src="ex1/out/maskgct/439.wav" type="audio/wav"></audio></div></td>
+                        <td><div class="demo-item"><audio controls><source src="ex1/out/cosyvoice2/439.wav" type="audio/wav"></audio></div></td>
+                        <td><div class="demo-item"><audio controls><source src="ex1/out/sparktts/439.wav" type="audio/wav"></audio></div></td>
+                        <td><div class="demo-item"><audio controls><source src="ex1/out/f5/439.wav" type="audio/wav"></audio></div></td>
+                    </tr>
+
+                    <tr>
+                        <td rowspan="2">Depressed</td>
+                        <td colspan="2"> <div class="demo-item"><audio controls><source src="ex1/prompt/03_low_3.wav" type="audio/wav"></audio></div></td>
+                        <td>基本上隔一天，小如便会因为不听话而挨揍。</td>
+                        <td><div class="demo-item"><audio controls><source src="ex1/out/indextts2/239.wav" type="audio/wav"></audio></div></td>
+                        <td><div class="demo-item"><audio controls><source src="ex1/out/indextts2_wog/239.wav" type="audio/wav"></audio></div></td>
+                        <td><div class="demo-item"><audio controls><source src="ex1/out/indextts2_wos2m/239.wav" type="audio/wav"></audio></div></td>
+                        <td><div class="demo-item"><audio controls><source src="ex1/out/indextts/239.wav" type="audio/wav"></audio></div></td>
+                        <td><div class="demo-item"><audio controls><source src="ex1/out/maskgct/239.wav" type="audio/wav"></audio></div></td>
+                        <td><div class="demo-item"><audio controls><source src="ex1/out/cosyvoice2/239.wav" type="audio/wav"></audio></div></td>
+                        <td><div class="demo-item"><audio controls><source src="ex1/out/sparktts/239.wav" type="audio/wav"></audio></div></td>
+                        <td><div class="demo-item"><audio controls><source src="ex1/out/f5/239.wav" type="audio/wav"></audio></div></td>
+                    </tr>
+                    <tr>
+                        <td colspan="2"> <div class="demo-item"><audio controls><source src="ex1/prompt/12_low_3.wav" type="audio/wav"></audio></div></td>
+                        <td>狗狗阿黄同志，当森林学校的门卫有五年啦，工作尽职尽责。</td>
+                        <td><div class="demo-item"><audio controls><source src="ex1/out/indextts2/993.wav" type="audio/wav"></audio></div></td>
+                        <td><div class="demo-item"><audio controls><source src="ex1/out/indextts2_wog/993.wav" type="audio/wav"></audio></div></td>
+                        <td><div class="demo-item"><audio controls><source src="ex1/out/indextts2_wos2m/993.wav" type="audio/wav"></audio></div></td>
+                        <td><div class="demo-item"><audio controls><source src="ex1/out/indextts/993.wav" type="audio/wav"></audio></div></td>
+                        <td><div class="demo-item"><audio controls><source src="ex1/out/maskgct/993.wav" type="audio/wav"></audio></div></td>
+                        <td><div class="demo-item"><audio controls><source src="ex1/out/cosyvoice2/993.wav" type="audio/wav"></audio></div></td>
+                        <td><div class="demo-item"><audio controls><source src="ex1/out/sparktts/993.wav" type="audio/wav"></audio></div></td>
+                        <td><div class="demo-item"><audio controls><source src="ex1/out/f5/993.wav" type="audio/wav"></audio></div></td>
+                    </tr>
+
+                    <tr>
+                        <td rowspan="2">Fear</td>
+                        <td colspan="2"> <div class="demo-item"><audio controls><source src="ex1/prompt/11_fear_2.wav" type="audio/wav"></audio></div></td>
+                        <td>但到投票前日，内菲斯竟以黑马之姿冲过席尔瓦，日渐下降的支持率。</td>
+                        <td><div class="demo-item"><audio controls><source src="ex1/out/indextts2/881.wav" type="audio/wav"></audio></div></td>
+                        <td><div class="demo-item"><audio controls><source src="ex1/out/indextts2_wog/881.wav" type="audio/wav"></audio></div></td>
+                        <td><div class="demo-item"><audio controls><source src="ex1/out/indextts2_wos2m/881.wav" type="audio/wav"></audio></div></td>
+                        <td><div class="demo-item"><audio controls><source src="ex1/out/indextts/881.wav" type="audio/wav"></audio></div></td>
+                        <td><div class="demo-item"><audio controls><source src="ex1/out/maskgct/881.wav" type="audio/wav"></audio></div></td>
+                        <td><div class="demo-item"><audio controls><source src="ex1/out/cosyvoice2/881.wav" type="audio/wav"></audio></div></td>
+                        <td><div class="demo-item"><audio controls><source src="ex1/out/sparktts/881.wav" type="audio/wav"></audio></div></td>
+                        <td><div class="demo-item"><audio controls><source src="ex1/out/f5/881.wav" type="audio/wav"></audio></div></td>
+                    </tr>
+                    <tr>
+                        <td colspan="2"> <div class="demo-item"><audio controls><source src="ex1/prompt/08_fear_3.wav" type="audio/wav"></audio></div></td>
+                        <td>过了一会一切都结束了，这座山在月光下显得幽静而静谧。</td>
+                        <td><div class="demo-item"><audio controls><source src="ex1/out/indextts2/635.wav" type="audio/wav"></audio></div></td>
+                        <td><div class="demo-item"><audio controls><source src="ex1/out/indextts2_wog/635.wav" type="audio/wav"></audio></div></td>
+                        <td><div class="demo-item"><audio controls><source src="ex1/out/indextts2_wos2m/635.wav" type="audio/wav"></audio></div></td>
+                        <td><div class="demo-item"><audio controls><source src="ex1/out/indextts/635.wav" type="audio/wav"></audio></div></td>
+                        <td><div class="demo-item"><audio controls><source src="ex1/out/maskgct/635.wav" type="audio/wav"></audio></div></td>
+                        <td><div class="demo-item"><audio controls><source src="ex1/out/cosyvoice2/635.wav" type="audio/wav"></audio></div></td>
+                        <td><div class="demo-item"><audio controls><source src="ex1/out/sparktts/635.wav" type="audio/wav"></audio></div></td>
+                        <td><div class="demo-item"><audio controls><source src="ex1/out/f5/635.wav" type="audio/wav"></audio></div></td>
+                    </tr>
+
+
+                    <tr>
+                        <td rowspan="2">Cry</td>
+                        <td colspan="2"> <div class="demo-item"><audio controls><source src="ex1/prompt/10_cry_2.wav" type="audio/wav"></audio></div></td>
+                        <td>共同建设面向未来的交通，和出行服务新生态</td>
+                        <td><div class="demo-item"><audio controls><source src="ex1/out/indextts2/788.wav" type="audio/wav"></audio></div></td>
+                        <td><div class="demo-item"><audio controls><source src="ex1/out/indextts2_wog/788.wav" type="audio/wav"></audio></div></td>
+                        <td><div class="demo-item"><audio controls><source src="ex1/out/indextts2_wos2m/788.wav" type="audio/wav"></audio></div></td>
+                        <td><div class="demo-item"><audio controls><source src="ex1/out/indextts/788.wav" type="audio/wav"></audio></div></td>
+                        <td><div class="demo-item"><audio controls><source src="ex1/out/maskgct/788.wav" type="audio/wav"></audio></div></td>
+                        <td><div class="demo-item"><audio controls><source src="ex1/out/cosyvoice2/788.wav" type="audio/wav"></audio></div></td>
+                        <td><div class="demo-item"><audio controls><source src="ex1/out/sparktts/788.wav" type="audio/wav"></audio></div></td>
+                        <td><div class="demo-item"><audio controls><source src="ex1/out/f5/788.wav" type="audio/wav"></audio></div></td>
+                    </tr>
+                        <td colspan="2"> <div class="demo-item"><audio controls><source src="ex1/prompt/05_cry_1.wav" type="audio/wav"></audio></div></td>
+                        <td>汤姆，我真愿意信你的话，这样可以一肥遮百丑。</td>
+                        <td><div class="demo-item"><audio controls><source src="ex1/out/indextts2/361.wav" type="audio/wav"></audio></div></td>
+                        <td><div class="demo-item"><audio controls><source src="ex1/out/indextts2_wog/361.wav" type="audio/wav"></audio></div></td>
+                        <td><div class="demo-item"><audio controls><source src="ex1/out/indextts2_wos2m/361.wav" type="audio/wav"></audio></div></td>
+                        <td><div class="demo-item"><audio controls><source src="ex1/out/indextts/361.wav" type="audio/wav"></audio></div></td>
+                        <td><div class="demo-item"><audio controls><source src="ex1/out/maskgct/361.wav" type="audio/wav"></audio></div></td>
+                        <td><div class="demo-item"><audio controls><source src="ex1/out/cosyvoice2/361.wav" type="audio/wav"></audio></div></td>
+                        <td><div class="demo-item"><audio controls><source src="ex1/out/sparktts/361.wav" type="audio/wav"></audio></div></td>
+                        <td><div class="demo-item"><audio controls><source src="ex1/out/f5/361.wav" type="audio/wav"></audio></div></td>
+                    </tr>
+
+                    <tr>
+                        <td rowspan="2">Angry</td>
+                        <td colspan="2"> <div class="demo-item"><audio controls><source src="ex1/prompt/08_angry_3.wav" type="audio/wav"></audio></div></td>
+                        <td>你在我们屋子里走路的时候，发现路程遥远，这是不足为怪的。</td>
+                        <td><div class="demo-item"><audio controls><source src="ex1/out/indextts2/600.wav" type="audio/wav"></audio></div></td>
+                        <td><div class="demo-item"><audio controls><source src="ex1/out/indextts2_wog/600.wav" type="audio/wav"></audio></div></td>
+                        <td><div class="demo-item"><audio controls><source src="ex1/out/indextts2_wos2m/600.wav" type="audio/wav"></audio></div></td>
+                        <td><div class="demo-item"><audio controls><source src="ex1/out/indextts/600.wav" type="audio/wav"></audio></div></td>
+                        <td><div class="demo-item"><audio controls><source src="ex1/out/maskgct/600.wav" type="audio/wav"></audio></div></td>
+                        <td><div class="demo-item"><audio controls><source src="ex1/out/cosyvoice2/600.wav" type="audio/wav"></audio></div></td>
+                        <td><div class="demo-item"><audio controls><source src="ex1/out/sparktts/600.wav" type="audio/wav"></audio></div></td>
+                        <td><div class="demo-item"><audio controls><source src="ex1/out/f5/600.wav" type="audio/wav"></audio></div></td>
+                    </tr>
+                    <tr>
+                        <td colspan="2"> <div class="demo-item"><audio controls><source src="ex1/prompt/12_angry_2.wav" type="audio/wav"></audio></div></td>
+                        <td>似乎科琳完成的这身午夜蓝套，裙与旧时代的职业女性并无分别。</td>
+                        <td><div class="demo-item"><audio controls><source src="ex1/out/indextts2/929.wav" type="audio/wav"></audio></div></td>
+                        <td><div class="demo-item"><audio controls><source src="ex1/out/indextts2_wog/929.wav" type="audio/wav"></audio></div></td>
+                        <td><div class="demo-item"><audio controls><source src="ex1/out/indextts2_wos2m/929.wav" type="audio/wav"></audio></div></td>
+                        <td><div class="demo-item"><audio controls><source src="ex1/out/indextts/929.wav" type="audio/wav"></audio></div></td>
+                        <td><div class="demo-item"><audio controls><source src="ex1/out/maskgct/929.wav" type="audio/wav"></audio></div></td>
+                        <td><div class="demo-item"><audio controls><source src="ex1/out/cosyvoice2/929.wav" type="audio/wav"></audio></div></td>
+                        <td><div class="demo-item"><audio controls><source src="ex1/out/sparktts/929.wav" type="audio/wav"></audio></div></td>
+                        <td><div class="demo-item"><audio controls><source src="ex1/out/f5/929.wav" type="audio/wav"></audio></div></td>
+                    </tr>
+
+                    <tr>
+                        <td rowspan="2">Happy</td>
+                        <td colspan="2"> <div class="demo-item"><audio controls><source src="ex1/prompt/09_happy_3.wav" type="audio/wav"></audio></div></td>
+                        <td>更傻眼的是过了没多久，银行就开始催款了。</td>
+                        <td><div class="demo-item"><audio controls><source src="ex1/out/indextts2/729.wav" type="audio/wav"></audio></div></td>
+                        <td><div class="demo-item"><audio controls><source src="ex1/out/indextts2_wog/729.wav" type="audio/wav"></audio></div></td>
+                        <td><div class="demo-item"><audio controls><source src="ex1/out/indextts2_wos2m/729.wav" type="audio/wav"></audio></div></td>
+                        <td><div class="demo-item"><audio controls><source src="ex1/out/indextts/729.wav" type="audio/wav"></audio></div></td>
+                        <td><div class="demo-item"><audio controls><source src="ex1/out/maskgct/729.wav" type="audio/wav"></audio></div></td>
+                        <td><div class="demo-item"><audio controls><source src="ex1/out/cosyvoice2/729.wav" type="audio/wav"></audio></div></td>
+                        <td><div class="demo-item"><audio controls><source src="ex1/out/sparktts/729.wav" type="audio/wav"></audio></div></td>
+                        <td><div class="demo-item"><audio controls><source src="ex1/out/f5/729.wav" type="audio/wav"></audio></div></td>
+                    </tr>
+                    <tr>
+                        <td colspan="2"> <div class="demo-item"><audio controls><source src="ex1/prompt/10_happy_2.wav" type="audio/wav"></audio></div></td>
+                        <td>其中一只正又两条前肢，抓住一只有自己身体五倍大的死蜘蛛。</td>
+                        <td><div class="demo-item"><audio controls><source src="ex1/out/indextts2/810.wav" type="audio/wav"></audio></div></td>
+                        <td><div class="demo-item"><audio controls><source src="ex1/out/indextts2_wog/810.wav" type="audio/wav"></audio></div></td>
+                        <td><div class="demo-item"><audio controls><source src="ex1/out/indextts2_wos2m/810.wav" type="audio/wav"></audio></div></td>
+                        <td><div class="demo-item"><audio controls><source src="ex1/out/indextts/810.wav" type="audio/wav"></audio></div></td>
+                        <td><div class="demo-item"><audio controls><source src="ex1/out/maskgct/810.wav" type="audio/wav"></audio></div></td>
+                        <td><div class="demo-item"><audio controls><source src="ex1/out/cosyvoice2/810.wav" type="audio/wav"></audio></div></td>
+                        <td><div class="demo-item"><audio controls><source src="ex1/out/sparktts/810.wav" type="audio/wav"></audio></div></td>
+                        <td><div class="demo-item"><audio controls><source src="ex1/out/f5/810.wav" type="audio/wav"></audio></div></td>
+                    </tr>
+
+                    <tr>
+                        <td rowspan="2">Surprise</td>
+                        <td colspan="2"> <div class="demo-item"><audio controls><source src="ex1/prompt/06_surprise_2.wav" type="audio/wav"></audio></div></td>
+                        <td>他希望能看到灯笼闪一下光，这虽然让他害怕。</td>
+                        <td><div class="demo-item"><audio controls><source src="ex1/out/indextts2/500.wav" type="audio/wav"></audio></div></td>
+                        <td><div class="demo-item"><audio controls><source src="ex1/out/indextts2_wog/500.wav" type="audio/wav"></audio></div></td>
+                        <td><div class="demo-item"><audio controls><source src="ex1/out/indextts2_wos2m/500.wav" type="audio/wav"></audio></div></td>
+                        <td><div class="demo-item"><audio controls><source src="ex1/out/indextts/500.wav" type="audio/wav"></audio></div></td>
+                        <td><div class="demo-item"><audio controls><source src="ex1/out/maskgct/500.wav" type="audio/wav"></audio></div></td>
+                        <td><div class="demo-item"><audio controls><source src="ex1/out/cosyvoice2/500.wav" type="audio/wav"></audio></div></td>
+                        <td><div class="demo-item"><audio controls><source src="ex1/out/sparktts/500.wav" type="audio/wav"></audio></div></td>
+                        <td><div class="demo-item"><audio controls><source src="ex1/out/f5/500.wav" type="audio/wav"></audio></div></td>
+                    </tr>
+                    <tr>
+                        <td colspan="2"> <div class="demo-item"><audio controls><source src="ex1/prompt/12_surprise_2.wav" type="audio/wav"></audio></div></td>
+                        <td>比如有的业主，贪便宜找马路上的游击队来装修。</td>
+                        <td><div class="demo-item"><audio controls><source src="ex1/out/indextts2/1001.wav" type="audio/wav"></audio></div></td>
+                        <td><div class="demo-item"><audio controls><source src="ex1/out/indextts2_wog/1001.wav" type="audio/wav"></audio></div></td>
+                        <td><div class="demo-item"><audio controls><source src="ex1/out/indextts2_wos2m/1001.wav" type="audio/wav"></audio></div></td>
+                        <td><div class="demo-item"><audio controls><source src="ex1/out/indextts/1001.wav" type="audio/wav"></audio></div></td>
+                        <td><div class="demo-item"><audio controls><source src="ex1/out/maskgct/1001.wav" type="audio/wav"></audio></div></td>
+                        <td><div class="demo-item"><audio controls><source src="ex1/out/cosyvoice2/1001.wav" type="audio/wav"></audio></div></td>
+                        <td><div class="demo-item"><audio controls><source src="ex1/out/sparktts/1001.wav" type="audio/wav"></audio></div></td>
+                        <td><div class="demo-item"><audio controls><source src="ex1/out/f5/1001.wav" type="audio/wav"></audio></div></td>
+                    </tr>
+
+
+
+                </table>
+            </div>
+        </div>
+
+        <h3 id="section2.2">2.2 Using Different Prompts</h3>
+        <h4>We employ distinct audio prompts as references for timbre and emotional expression, respectively, such that speaker-related timbral characteristics and emotion-related prosodic and intonational features are derived from separate audio sources. This ablation study enables a more effective validation of the emotion modulation mechanism, eliminating confounding effects caused by variations in timbre.</h4>
+        <div class="demo-section">
+            <div class="table-container">
+                <!--table style="width:100%"-->
+                <table>
+                    <tr>
+                        <th style="min-width:200px;">Timbre-Audio-Prompt</th>
+                        <th style="min-width:200px;">Emotion-Audio-Prompt</th>
+                        <th style="min-width:200px;">Text</th>
+                        <th>Emotion Weight: 0</th>
+                        <th>Emotion Weight: 0.6</th>
+                        <th>Emotion Weight: 1.0</th>
+                        <th>Emotion Weight: 1.4</th>
+                    </tr>
+                    
+                    <!-- bage -->
+                    <tr>
+                        <td rowspan="2"> <div class="demo-item"><audio controls><source src="ex2/timbre-prompt/bage.wav" type="audio/wav"></audio></div></td>
+                        <td> <div class="demo-item"><audio controls><source src="ex2/emotion-prompt/10_fear_2.wav" type="audio/wav"></audio></div></td>
+                        <td>这一天，天上的乌云又多又厚又沉，整个森林暗得就像黑夜一样。</td>
+                        <td><div class="demo-item"><audio controls><source src="ex2/out/bage_01/bage_01_0.0.wav" type="audio/wav"></audio></div></td>
+                        <td><div class="demo-item"><audio controls><source src="ex2/out/bage_01/bage_01_0.6.wav" type="audio/wav"></audio></div></td>
+                        <td><div class="demo-item"><audio controls><source src="ex2/out/bage_01/bage_01_1.0.wav" type="audio/wav"></audio></div></td>
+                        <td><div class="demo-item"><audio controls><source src="ex2/out/bage_01/bage_01_1.4.wav" type="audio/wav"></audio></div></td>
+                    </tr>
+                    <tr>
+                        <td> <div class="demo-item"><audio controls><source src="ex2/emotion-prompt/08_angry_3.wav" type="audio/wav"></audio></div></td>
+                        <td>这他妈就是你给的解决方案？老子连续加班三个月，就换来一沓废纸！现在、立刻、马上给我滚出！</td>
+                        <td><div class="demo-item"><audio controls><source src="ex2/out/bage_03/bage_03_0.0.wav" type="audio/wav"></audio></div></td>
+                        <td><div class="demo-item"><audio controls><source src="ex2/out/bage_03/bage_03_0.6.wav" type="audio/wav"></audio></div></td>
+                        <td><div class="demo-item"><audio controls><source src="ex2/out/bage_03/bage_03_1.0.wav" type="audio/wav"></audio></div></td>
+                        <td><div class="demo-item"><audio controls><source src="ex2/out/bage_03/bage_03_1.4.wav" type="audio/wav"></audio></div></td>
+                    </tr>
+
+                    <!-- jieshuonan -->
+                    <tr>
+                        <td rowspan="2"> <div class="demo-item"><audio controls><source src="ex2/timbre-prompt/jieshuonan.wav" type="audio/wav"></audio></div></td>
+                        <td> <div class="demo-item"><audio controls><source src="ex2/emotion-prompt/12_low_3.wav" type="audio/wav"></audio></div></td>
+                        <td>我站在人海中，却感觉比任何时候都要孤独。</td>
+                        <td><div class="demo-item"><audio controls><source src="ex2/out/jieshuonan_16/jieshuonan_16_0.0.wav" type="audio/wav"></audio></div></td>
+                        <td><div class="demo-item"><audio controls><source src="ex2/out/jieshuonan_16/jieshuonan_16_0.6.wav" type="audio/wav"></audio></div></td>
+                        <td><div class="demo-item"><audio controls><source src="ex2/out/jieshuonan_16/jieshuonan_16_1.0.wav" type="audio/wav"></audio></div></td>
+                        <td><div class="demo-item"><audio controls><source src="ex2/out/jieshuonan_16/jieshuonan_16_1.4.wav" type="audio/wav"></audio></div></td>
+                    </tr>
+                    <tr>
+                        <td> <div class="demo-item"><audio controls><source src="ex2/emotion-prompt/07_surprise_3.wav" type="audio/wav"></audio></div></td>
+                        <td>尾号四四九幺的乘客刚夸了你，厉害了我的师傅，你真是个活地图。</td>
+                        <td><div class="demo-item"><audio controls><source src="ex2/out/jieshuonan_25/jieshuonan_25_0.0.wav" type="audio/wav"></audio></div></td>
+                        <td><div class="demo-item"><audio controls><source src="ex2/out/jieshuonan_25/jieshuonan_25_0.6.wav" type="audio/wav"></audio></div></td>
+                        <td><div class="demo-item"><audio controls><source src="ex2/out/jieshuonan_25/jieshuonan_25_1.0.wav" type="audio/wav"></audio></div></td>
+                        <td><div class="demo-item"><audio controls><source src="ex2/out/jieshuonan_25/jieshuonan_25_1.4.wav" type="audio/wav"></audio></div></td>
+                    </tr>
+
+                    <!-- xindong -->
+                    <tr>
+                        <td rowspan="2"> <div class="demo-item"><audio controls><source src="ex2/timbre-prompt/xindong.wav" type="audio/wav"></audio></div></td>
+                        <td> <div class="demo-item"><audio controls><source src="ex2/emotion-prompt/12_low_3.wav" type="audio/wav"></audio></div></td>
+                        <td>我站在人海中，却感觉比任何时候都要孤独。</td>
+                        <td><div class="demo-item"><audio controls><source src="ex2/out/xindong_17/xindong_17_0.0.wav" type="audio/wav"></audio></div></td>
+                        <td><div class="demo-item"><audio controls><source src="ex2/out/xindong_17/xindong_17_0.6.wav" type="audio/wav"></audio></div></td>
+                        <td><div class="demo-item"><audio controls><source src="ex2/out/xindong_17/xindong_17_1.0.wav" type="audio/wav"></audio></div></td>
+                        <td><div class="demo-item"><audio controls><source src="ex2/out/xindong_17/xindong_17_1.4.wav" type="audio/wav"></audio></div></td>
+                    </tr>
+                    <tr>
+                        <td> <div class="demo-item"><audio controls><source src="ex2/emotion-prompt/04_happy_3.wav" type="audio/wav"></audio></div></td>
+                        <td>做一个温暖的人，将岁月里的凝重、安暖，写意成简单，将过往的风景，安放在清浅的时光中。</td>
+                        <td><div class="demo-item"><audio controls><source src="ex2/out/xindong_21/xindong_21_0.0.wav" type="audio/wav"></audio></div></td>
+                        <td><div class="demo-item"><audio controls><source src="ex2/out/xindong_21/xindong_21_0.6.wav" type="audio/wav"></audio></div></td>
+                        <td><div class="demo-item"><audio controls><source src="ex2/out/xindong_21/xindong_21_1.0.wav" type="audio/wav"></audio></div></td>
+                        <td><div class="demo-item"><audio controls><source src="ex2/out/xindong_21/xindong_21_1.4.wav" type="audio/wav"></audio></div></td>
+                    </tr>
+
+                </table>
+            </div>
+        </div>
+
+        <!--
+        <h3 id="section2.3">2.3 Using Textual Description</h3>
+        <h4>In this alternative approach, we replace the emotional audio reference with a descriptive textual prompt, while maintaining the timbre reference audio unchanged. This allows the model to condition emotional expression solely on text-based emotion cues rather than on audio signals. Such a setup facilitates the investigation of the model’s capability to generate emotionally expressive speech guided by linguistic descriptions, providing insights into the effectiveness of text-driven emotion control without relying on emotion audio prompts.</h4>
+        <div class="demo-section">
+            <div class="table-container">
+                <table>
+                    <tr>
+                        <th style="min-width:200px;">Timbre-Audio-Prompt</th>
+                        <th style="min-width:200px;">Emotion-Text-Prompt</th>
+                        <th style="min-width:200px;">Text</th>
+                        <th>Audio</th>
+                    </tr>
+                    
+                    <tr>
+                        <td rowspan="2"> <div class="demo-item"><audio controls><source src="ex2/timbre-prompt/bage.wav" type="audio/wav"></audio></div></td>
+                        <td>使用xx的情感进行表达</td>
+                        <td>这一天，天上的乌云又多又厚又沉，整个森林暗得就像黑夜一样。</td>
+                        <td><div class="demo-item"><audio controls><source src="ex2/out/bage_01/bage_01_0.0.wav" type="audio/wav"></audio></div></td>
+                    </tr>
+                    <tr>
+                        <td>使用xx的情</td>
+                        <td>这他妈就是你给的解决方案？老子连续加班三个月，就换来一沓废纸！现在、立刻、马上给我滚出！</td>
+                        <td><div class="demo-item"><audio controls><source src="ex2/out/bage_03/bage_03_0.0.wav" type="audio/wav"></audio></div></td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+        -->
+
+    </div>
+
+    <!-- page 3 -->
+    <div class="container" id="section3">
+        <h2>3 Zero-Shot TTS Comparison With Others(Open-source data)</h2>
+        <h3 id="section3.1">3.1 Monolingual Speech Synthesis</h3>
+        <div class="demo-section">
+            <div class="table-container">
+                <!--table style="width:100%"-->
+                <table>
+                    <tr>
+                        <th style="min-width:90px">Emotion</th>
+                        <th>Timbre-Audio-Prompt</th>
+                        <th>Emotion-Audio-Prompt</th>
+                        <th style="min-width:200px;">Text</th>
+                        <th>GroundTruth</th>
+                        <th>IndexTTS2</th>
+                        <th>IndexTTS2-wog</th>
+                        <th>IndexTTS2-wos2m</th>
+                        <th>IndexTTS</th>
+                        <th>MaskGCT</th>
+                        <th>CosyVoice2</th>
+                        <th>SparkTTS</th>
+                        <th>F5-TTS</th>
+                    </tr>
+                    
+                    <!--aishel-->
+                    <tr>
+                        <td>Speaker-1</td>
+                        <td colspan="2"> <div class="demo-item"><audio controls><source src="ex3/prompt/0296.wav" type="audio/wav"></audio></div></td>
+                        <td>家居养娃的李娜又重新出现在媒体大众的面前</td>
+                        <td><div class="demo-item"><audio controls><source src="ex3/out/gt/0296.wav" type="audio/wav"></audio></div></td>
+                        <td><div class="demo-item"><audio controls><source src="ex3/out/indextts2/0296.wav" type="audio/wav"></audio></div></td>
+                        <td><div class="demo-item"><audio controls><source src="ex3/out/indextts2_wog/0296.wav" type="audio/wav"></audio></div></td>
+                        <td><div class="demo-item"><audio controls><source src="ex3/out/indextts2_wos2m/0296.wav" type="audio/wav"></audio></div></td>
+                        <td><div class="demo-item"><audio controls><source src="ex3/out/indextts/0296.wav" type="audio/wav"></audio></div></td>
+                        <td><div class="demo-item"><audio controls><source src="ex3/out/maskgct/0296.wav" type="audio/wav"></audio></div></td>
+                        <td><div class="demo-item"><audio controls><source src="ex3/out/cosyvoice2/0296.wav" type="audio/wav"></audio></div></td>
+                        <td><div class="demo-item"><audio controls><source src="ex3/out/sparktts/0296.wav" type="audio/wav"></audio></div></td>
+                        <td><div class="demo-item"><audio controls><source src="ex3/out/f5/0296.wav" type="audio/wav"></audio></div></td>
+                    </tr>
+                    <tr>
+                        <td>Speaker-2</td>
+                        <td colspan="2"> <div class="demo-item"><audio controls><source src="ex3/prompt/0482.wav" type="audio/wav"></audio></div></td>
+                        <td>机关企事业单位等社会志愿者三千一百名</td>
+                        <td><div class="demo-item"><audio controls><source src="ex3/out/gt/0482.wav" type="audio/wav"></audio></div></td>
+                        <td><div class="demo-item"><audio controls><source src="ex3/out/indextts2/0482.wav" type="audio/wav"></audio></div></td>
+                        <td><div class="demo-item"><audio controls><source src="ex3/out/indextts2_wog/0482.wav" type="audio/wav"></audio></div></td>
+                        <td><div class="demo-item"><audio controls><source src="ex3/out/indextts2_wos2m/0482.wav" type="audio/wav"></audio></div></td>
+                        <td><div class="demo-item"><audio controls><source src="ex3/out/indextts/0482.wav" type="audio/wav"></audio></div></td>
+                        <td><div class="demo-item"><audio controls><source src="ex3/out/maskgct/0482.wav" type="audio/wav"></audio></div></td>
+                        <td><div class="demo-item"><audio controls><source src="ex3/out/cosyvoice2/0482.wav" type="audio/wav"></audio></div></td>
+                        <td><div class="demo-item"><audio controls><source src="ex3/out/sparktts/0482.wav" type="audio/wav"></audio></div></td>
+                        <td><div class="demo-item"><audio controls><source src="ex3/out/f5/0482.wav" type="audio/wav"></audio></div></td>
+                    </tr>
+
+                    <!--seeden-->
+                    <tr>
+                        <td>Speaker-3</td>
+                        <td colspan="2"> <div class="demo-item"><audio controls><source src="ex3/prompt/0735.wav" type="audio/wav"></audio></div></td>
+                        <td>These are two of only three known formations to have dinosaur fossils in Antarctica.</td>
+                        <td><div class="demo-item"><audio controls><source src="ex3/out/gt/0735.wav" type="audio/wav"></audio></div></td>
+                        <td><div class="demo-item"><audio controls><source src="ex3/out/indextts2/0735.wav" type="audio/wav"></audio></div></td>
+                        <td><div class="demo-item"><audio controls><source src="ex3/out/indextts2_wog/0735.wav" type="audio/wav"></audio></div></td>
+                        <td><div class="demo-item"><audio controls><source src="ex3/out/indextts2_wos2m/0735.wav" type="audio/wav"></audio></div></td>
+                        <td><div class="demo-item"><audio controls><source src="ex3/out/indextts/0735.wav" type="audio/wav"></audio></div></td>
+                        <td><div class="demo-item"><audio controls><source src="ex3/out/maskgct/0735.wav" type="audio/wav"></audio></div></td>
+                        <td><div class="demo-item"><audio controls><source src="ex3/out/cosyvoice2/0735.wav" type="audio/wav"></audio></div></td>
+                        <td><div class="demo-item"><audio controls><source src="ex3/out/sparktts/0735.wav" type="audio/wav"></audio></div></td>
+                        <td><div class="demo-item"><audio controls><source src="ex3/out/f5/0735.wav" type="audio/wav"></audio></div></td>
+                    </tr>
+                    <tr>
+                        <td>Speaker-4</td>
+                        <td colspan="2"> <div class="demo-item"><audio controls><source src="ex3/prompt/0998.wav" type="audio/wav"></audio></div></td>
+                        <td>A woman sits as she shows the designs she has made in the floor.</td>
+                        <td><div class="demo-item"><audio controls><source src="ex3/out/gt/0998.wav" type="audio/wav"></audio></div></td>
+                        <td><div class="demo-item"><audio controls><source src="ex3/out/indextts2/0998.wav" type="audio/wav"></audio></div></td>
+                        <td><div class="demo-item"><audio controls><source src="ex3/out/indextts2_wog/0998.wav" type="audio/wav"></audio></div></td>
+                        <td><div class="demo-item"><audio controls><source src="ex3/out/indextts2_wos2m/0998.wav" type="audio/wav"></audio></div></td>
+                        <td><div class="demo-item"><audio controls><source src="ex3/out/indextts/0998.wav" type="audio/wav"></audio></div></td>
+                        <td><div class="demo-item"><audio controls><source src="ex3/out/maskgct/0998.wav" type="audio/wav"></audio></div></td>
+                        <td><div class="demo-item"><audio controls><source src="ex3/out/cosyvoice2/0998.wav" type="audio/wav"></audio></div></td>
+                        <td><div class="demo-item"><audio controls><source src="ex3/out/sparktts/0998.wav" type="audio/wav"></audio></div></td>
+                        <td><div class="demo-item"><audio controls><source src="ex3/out/f5/0998.wav" type="audio/wav"></audio></div></td>
+                    </tr>
+                    <tr>
+                        <td>Speaker-5</td>
+                        <td colspan="2"> <div class="demo-item"><audio controls><source src="ex3/prompt/1013.wav" type="audio/wav"></audio></div></td>
+                        <td>The man looked at him without responding.</td>
+                        <td><div class="demo-item"><audio controls><source src="ex3/out/gt/1013.wav" type="audio/wav"></audio></div></td>
+                        <td><div class="demo-item"><audio controls><source src="ex3/out/indextts2/1013.wav" type="audio/wav"></audio></div></td>
+                        <td><div class="demo-item"><audio controls><source src="ex3/out/indextts2_wog/1013.wav" type="audio/wav"></audio></div></td>
+                        <td><div class="demo-item"><audio controls><source src="ex3/out/indextts2_wos2m/1013.wav" type="audio/wav"></audio></div></td>
+                        <td><div class="demo-item"><audio controls><source src="ex3/out/indextts/1013.wav" type="audio/wav"></audio></div></td>
+                        <td><div class="demo-item"><audio controls><source src="ex3/out/maskgct/1013.wav" type="audio/wav"></audio></div></td>
+                        <td><div class="demo-item"><audio controls><source src="ex3/out/cosyvoice2/1013.wav" type="audio/wav"></audio></div></td>
+                        <td><div class="demo-item"><audio controls><source src="ex3/out/sparktts/1013.wav" type="audio/wav"></audio></div></td>
+                        <td><div class="demo-item"><audio controls><source src="ex3/out/f5/1013.wav" type="audio/wav"></audio></div></td>
+                    </tr>
+
+                    <!--seedzh-->
+                    <tr>
+                        <td>Speaker-6</td>
+                        <td colspan="2"> <div class="demo-item"><audio controls><source src="ex3/prompt/0829.wav" type="audio/wav"></audio></div></td>
+                        <td>胡萝卜凉拌或炒鸡蛋味道都是棒极的，胡萝卜骄傲地说。</td>
+                        <td><div class="demo-item"><audio controls><source src="ex3/out/gt/0829.wav" type="audio/wav"></audio></div></td>
+                        <td><div class="demo-item"><audio controls><source src="ex3/out/indextts2/0829.wav" type="audio/wav"></audio></div></td>
+                        <td><div class="demo-item"><audio controls><source src="ex3/out/indextts2_wog/0829.wav" type="audio/wav"></audio></div></td>
+                        <td><div class="demo-item"><audio controls><source src="ex3/out/indextts2_wos2m/0829.wav" type="audio/wav"></audio></div></td>
+                        <td><div class="demo-item"><audio controls><source src="ex3/out/indextts/0829.wav" type="audio/wav"></audio></div></td>
+                        <td><div class="demo-item"><audio controls><source src="ex3/out/maskgct/0829.wav" type="audio/wav"></audio></div></td>
+                        <td><div class="demo-item"><audio controls><source src="ex3/out/cosyvoice2/0829.wav" type="audio/wav"></audio></div></td>
+                        <td><div class="demo-item"><audio controls><source src="ex3/out/sparktts/0829.wav" type="audio/wav"></audio></div></td>
+                        <td><div class="demo-item"><audio controls><source src="ex3/out/f5/0829.wav" type="audio/wav"></audio></div></td>
+                    </tr>
+                    <tr>
+                        <td>Speaker-7</td>
+                        <td colspan="2"> <div class="demo-item"><audio controls><source src="ex3/prompt/1131.wav" type="audio/wav"></audio></div></td>
+                        <td>我怎么感觉网络游戏的画质，不仅没有比单机游戏降低。</td>
+                        <td><div class="demo-item"><audio controls><source src="ex3/out/gt/1131.wav" type="audio/wav"></audio></div></td>
+                        <td><div class="demo-item"><audio controls><source src="ex3/out/indextts2/1131.wav" type="audio/wav"></audio></div></td>
+                        <td><div class="demo-item"><audio controls><source src="ex3/out/indextts2_wog/1131.wav" type="audio/wav"></audio></div></td>
+                        <td><div class="demo-item"><audio controls><source src="ex3/out/indextts2_wos2m/1131.wav" type="audio/wav"></audio></div></td>
+                        <td><div class="demo-item"><audio controls><source src="ex3/out/indextts/1131.wav" type="audio/wav"></audio></div></td>
+                        <td><div class="demo-item"><audio controls><source src="ex3/out/maskgct/1131.wav" type="audio/wav"></audio></div></td>
+                        <td><div class="demo-item"><audio controls><source src="ex3/out/cosyvoice2/1131.wav" type="audio/wav"></audio></div></td>
+                        <td><div class="demo-item"><audio controls><source src="ex3/out/sparktts/1131.wav" type="audio/wav"></audio></div></td>
+                        <td><div class="demo-item"><audio controls><source src="ex3/out/f5/1131.wav" type="audio/wav"></audio></div></td>
+                    </tr>
+                    <tr>
+                        <td>Speaker-8</td>
+                        <td colspan="2"> <div class="demo-item"><audio controls><source src="ex3/prompt/1358.wav" type="audio/wav"></audio></div></td>
+                        <td>那些袖珍衣服挂在架子上，远远看上去就像一幅画，可漂亮了。</td>
+                        <td><div class="demo-item"><audio controls><source src="ex3/out/gt/1358.wav" type="audio/wav"></audio></div></td>
+                        <td><div class="demo-item"><audio controls><source src="ex3/out/indextts2/1358.wav" type="audio/wav"></audio></div></td>
+                        <td><div class="demo-item"><audio controls><source src="ex3/out/indextts2_wog/1358.wav" type="audio/wav"></audio></div></td>
+                        <td><div class="demo-item"><audio controls><source src="ex3/out/indextts2_wos2m/1358.wav" type="audio/wav"></audio></div></td>
+                        <td><div class="demo-item"><audio controls><source src="ex3/out/indextts/1358.wav" type="audio/wav"></audio></div></td>
+                        <td><div class="demo-item"><audio controls><source src="ex3/out/maskgct/1358.wav" type="audio/wav"></audio></div></td>
+                        <td><div class="demo-item"><audio controls><source src="ex3/out/cosyvoice2/1358.wav" type="audio/wav"></audio></div></td>
+                        <td><div class="demo-item"><audio controls><source src="ex3/out/sparktts/1358.wav" type="audio/wav"></audio></div></td>
+                        <td><div class="demo-item"><audio controls><source src="ex3/out/f5/1358.wav" type="audio/wav"></audio></div></td>
+                    </tr>
+
+                    <!--libri-->
+                    <tr>
+                        <td>Speaker-9</td>
+                        <td colspan="2"> <div class="demo-item"><audio controls><source src="ex3/prompt/1806.wav" type="audio/wav"></audio></div></td>
+                        <td>rodolfo arrived at his own house without any impediment and leocadia's parents reached theirs heart broken and despairing</td>
+                        <td><div class="demo-item"><audio controls><source src="ex3/out/gt/1806.wav" type="audio/wav"></audio></div></td>
+                        <td><div class="demo-item"><audio controls><source src="ex3/out/indextts2/1806.wav" type="audio/wav"></audio></div></td>
+                        <td><div class="demo-item"><audio controls><source src="ex3/out/indextts2_wog/1806.wav" type="audio/wav"></audio></div></td>
+                        <td><div class="demo-item"><audio controls><source src="ex3/out/indextts2_wos2m/1806.wav" type="audio/wav"></audio></div></td>
+                        <td><div class="demo-item"><audio controls><source src="ex3/out/indextts/1806.wav" type="audio/wav"></audio></div></td>
+                        <td><div class="demo-item"><audio controls><source src="ex3/out/maskgct/1806.wav" type="audio/wav"></audio></div></td>
+                        <td><div class="demo-item"><audio controls><source src="ex3/out/cosyvoice2/1806.wav" type="audio/wav"></audio></div></td>
+                        <td><div class="demo-item"><audio controls><source src="ex3/out/sparktts/1806.wav" type="audio/wav"></audio></div></td>
+                        <td><div class="demo-item"><audio controls><source src="ex3/out/f5/1806.wav" type="audio/wav"></audio></div></td>
+                    </tr>
+                    <tr>
+                        <td>Speaker-10</td>
+                        <td colspan="2"> <div class="demo-item"><audio controls><source src="ex3/prompt/2563.wav" type="audio/wav"></audio></div></td>
+                        <td>the room of the great knife was high and big and around it ran rows of benches for the spectators to sit upon</td>
+                        <td><div class="demo-item"><audio controls><source src="ex3/out/gt/2563.wav" type="audio/wav"></audio></div></td>
+                        <td><div class="demo-item"><audio controls><source src="ex3/out/indextts2/2563.wav" type="audio/wav"></audio></div></td>
+                        <td><div class="demo-item"><audio controls><source src="ex3/out/indextts2_wog/2563.wav" type="audio/wav"></audio></div></td>
+                        <td><div class="demo-item"><audio controls><source src="ex3/out/indextts2_wos2m/2563.wav" type="audio/wav"></audio></div></td>
+                        <td><div class="demo-item"><audio controls><source src="ex3/out/indextts/2563.wav" type="audio/wav"></audio></div></td>
+                        <td><div class="demo-item"><audio controls><source src="ex3/out/maskgct/2563.wav" type="audio/wav"></audio></div></td>
+                        <td><div class="demo-item"><audio controls><source src="ex3/out/cosyvoice2/2563.wav" type="audio/wav"></audio></div></td>
+                        <td><div class="demo-item"><audio controls><source src="ex3/out/sparktts/2563.wav" type="audio/wav"></audio></div></td>
+                        <td><div class="demo-item"><audio controls><source src="ex3/out/f5/2563.wav" type="audio/wav"></audio></div></td>
+                    </tr>
+                    <tr>
+                        <td>Speaker-11</td>
+                        <td colspan="2"> <div class="demo-item"><audio controls><source src="ex3/prompt/0621.wav" type="audio/wav"></audio></div></td>
+                        <td>for a long time he had wished to explore the beautiful land of oz in which they lived</td>
+                        <td><div class="demo-item"><audio controls><source src="ex3/out/gt/0621.wav" type="audio/wav"></audio></div></td>
+                        <td><div class="demo-item"><audio controls><source src="ex3/out/indextts2/0621.wav" type="audio/wav"></audio></div></td>
+                        <td><div class="demo-item"><audio controls><source src="ex3/out/indextts2_wog/0621.wav" type="audio/wav"></audio></div></td>
+                        <td><div class="demo-item"><audio controls><source src="ex3/out/indextts2_wos2m/0621.wav" type="audio/wav"></audio></div></td>
+                        <td><div class="demo-item"><audio controls><source src="ex3/out/indextts/0621.wav" type="audio/wav"></audio></div></td>
+                        <td><div class="demo-item"><audio controls><source src="ex3/out/maskgct/0621.wav" type="audio/wav"></audio></div></td>
+                        <td><div class="demo-item"><audio controls><source src="ex3/out/cosyvoice2/0621.wav" type="audio/wav"></audio></div></td>
+                        <td><div class="demo-item"><audio controls><source src="ex3/out/sparktts/0621.wav" type="audio/wav"></audio></div></td>
+                        <td><div class="demo-item"><audio controls><source src="ex3/out/f5/0621.wav" type="audio/wav"></audio></div></td>
+                    </tr>
+
+
+
+                </table>
+            </div>
+        </div>
+
+        <!--
+        <h3 id="section3.2">3.2 Cross-Lingual Speech Synthesis</h3>
+        <div class="demo-section">
+            <div class="table-container">
+                <table>
+                    <tr>
+                        <th style="min-width:90px">Emotion</th>
+                        <th>Timbre-Audio-Prompt</th>
+                        <th>Emotion-Audio-Prompt</th>
+                        <th style="min-width:200px;">Text</th>
+                        <th>GroundTruth</th>
+                        <th>IndexTTS2</th>
+                        <th>IndexTTS2-wog</th>
+                        <th>IndexTTS2-wos2m</th>
+                        <th>IndexTTS</th>
+                        <th>MaskGCT</th>
+                        <th>CosyVoice2</th>
+                        <th>SparkTTS</th>
+                        <th>F5-TTS</th>
+                    </tr>
+                    
+                    <tr>
+                        <td>Speaker-1</td>
+                        <td colspan="2"> <div class="demo-item"><audio controls><source src="ex3/prompt/0296.wav" type="audio/wav"></audio></div></td>
+                        <td>家居养娃的李娜又重新出现在媒体大众的面前</td>
+                        <td><div class="demo-item"><audio controls><source src="ex4/out/gt/0296.wav" type="audio/wav"></audio></div></td>
+                        <td><div class="demo-item"><audio controls><source src="ex4/out/indextts2/0296.wav" type="audio/wav"></audio></div></td>
+                        <td><div class="demo-item"><audio controls><source src="ex4/out/indextts2_wog/0296.wav" type="audio/wav"></audio></div></td>
+                        <td><div class="demo-item"><audio controls><source src="ex4/out/indextts2_wos2m/0296.wav" type="audio/wav"></audio></div></td>
+                        <td><div class="demo-item"><audio controls><source src="ex4/out/indextts/0296.wav" type="audio/wav"></audio></div></td>
+                        <td><div class="demo-item"><audio controls><source src="ex4/out/maskgct/0296.wav" type="audio/wav"></audio></div></td>
+                        <td><div class="demo-item"><audio controls><source src="ex4/out/cosyvoice2/0296.wav" type="audio/wav"></audio></div></td>
+                        <td><div class="demo-item"><audio controls><source src="ex4/out/sparktts/0296.wav" type="audio/wav"></audio></div></td>
+                        <td><div class="demo-item"><audio controls><source src="ex4/out/f5/0296.wav" type="audio/wav"></audio></div></td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+        -->
+
+    </div>
+
+
+
+
+    <!-- Footer -->
+    <div class="footer">
+        <p>© 2025 May, Index SpeechTeam. All rights reserved.</p>
+    </div>
+</body>
+</html>
