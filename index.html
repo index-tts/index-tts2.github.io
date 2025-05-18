@@ -23,7 +23,7 @@
                 <ul>
                     <li><a href="#section2.1">2.1 Using Identical Prompt</a></li>
                     <li><a href="#section2.2">2.2 Using Different Prompts</a></li>
-                    <!--<li><a href="#section2.3">2.3 Using Textual Description</a></li>-->
+                    <li><a href="#section2.3">2.3 Using Textual Description</a></li>
                 </ul>
 
             <li><a href="#section3">3 Controllability: Duration-Adjustable Speech Generation</a></li>
@@ -335,7 +335,6 @@
             </div>
         </div>
 
-        <!--
         <h3 id="section2.3">2.3 Using Textual Description</h3>
         <h4>In this alternative approach, we replace the emotional audio reference with a descriptive textual prompt, while maintaining the timbre reference audio unchanged. This allows the model to condition emotional expression solely on text-based emotion cues rather than on audio signals. Such a setup facilitates the investigation of the model’s capability to generate emotionally expressive speech guided by linguistic descriptions, providing insights into the effectiveness of text-driven emotion control without relying on emotion audio prompts.</h4>
         <div class="demo-section">
@@ -349,20 +348,52 @@
                     </tr>
                     
                     <tr>
-                        <td rowspan="2"> <div class="demo-item"><audio controls><source src="ex2/timbre-prompt/bage.wav" type="audio/wav"></audio></div></td>
-                        <td>使用xx的情感进行表达</td>
-                        <td>这一天，天上的乌云又多又厚又沉，整个森林暗得就像黑夜一样。</td>
-                        <td><div class="demo-item"><audio controls><source src="ex2/out/bage_01/bage_01_0.0.wav" type="audio/wav"></audio></div></td>
+                        <td rowspan="1"> <div class="demo-item"><audio controls><source src="ex5/1/qingsong.wav" type="audio/wav"></audio></div></td>
+                        <td>超级无敌爆炸angry的情感，就像刚中了彩票被人偷拿了</td>
+                        <td>你问他为什么我没谈恋爱，我就失恋了，你问他，为什么这么对我，我以为我会问，可是我见到他之后，我就不想问了，因为人家根本就不想说，人家甚至都不想见到你，我为什么在那儿犯贱呢，所以我不是放过他，我是想放过我自己，人家不联系你怎么了，不回你微信怎么了，伤害你又怎么了，你算他谁啊?</td>
+                        <td><div class="demo-item"><audio controls><source src="ex5/1/qingsong_1.wav" type="audio/wav"></audio></div></td>
                     </tr>
+
                     <tr>
-                        <td>使用xx的情</td>
-                        <td>这他妈就是你给的解决方案？老子连续加班三个月，就换来一沓废纸！现在、立刻、马上给我滚出！</td>
-                        <td><div class="demo-item"><audio controls><source src="ex2/out/bage_03/bage_03_0.0.wav" type="audio/wav"></audio></div></td>
+                        <td rowspan="1"> <div class="demo-item"><audio controls><source src="ex5/2/jieshuonv.wav" type="audio/wav"></audio></div></td>
+                        <td>我要杀了你，你这该死的木瓜星灵！</td>
+                        <td>我要杀了你，你这该死的木瓜星灵！</td>
+                        <td><div class="demo-item"><audio controls><source src="ex5/2/jieshuonv_2.wav" type="audio/wav"></audio></div></td>
                     </tr>
+
+                    <tr>
+                        <td rowspan="1"> <div class="demo-item"><audio controls><source src="ex5/3/tangxi.wav" type="audio/wav"></audio></div></td>
+                        <td>又生气又委屈</td>
+                        <td>我为什么非得知道发生了什么呢，我不就是想给自己找一个原因嘛，我只是想找一个原因，我原谅他，可是我为什么非得原谅他呢，我干嘛把自己搞得这么卑微啊?</td>
+                        <td><div class="demo-item"><audio controls><source src="ex5/3/tangxi_3.wav" type="audio/wav"></audio></div></td>
+                    </tr>
+
+                    <tr>
+                        <td rowspan="1"> <div class="demo-item"><audio controls><source src="ex5/6/ligong.wav" type="audio/wav"></audio></div></td>
+                        <td>笑死我了，你不会上班没打卡吧！</td>
+                        <td>笑死我了，你不会上班没打卡吧！</td>
+                        <td><div class="demo-item"><audio controls><source src="ex5/6/ligong_6.wav" type="audio/wav"></audio></div></td>
+                    </tr>
+
+                    <tr>
+                        <td rowspan="1"> <div class="demo-item"><audio controls><source src="ex5/11/daimeng.wav" type="audio/wav"></audio></div></td>
+                        <td>我现在突然遇到了女鬼飘在空中，吓死我了</td>
+                        <td>黑暗笼罩着老旧的公寓，只有走廊尽头那盏接触不良的灯，时不时闪烁一下，投下扭曲的影子。林夏缩在被子里，手机屏幕的光映在她惨白的脸上.</td>
+                        <td><div class="demo-item"><audio controls><source src="ex5/11/daimeng_11.wav" type="audio/wav"></audio></div></td>
+                    </tr>
+
+                    <tr>
+                        <td rowspan="1"> <div class="demo-item"><audio controls><source src="ex5/15/bage.wav" type="audio/wav"></audio></div></td>
+                        <td>我们正在做一些神奇的事情，给我来一种又fear，但是又有点开心的情感。</td>
+                        <td>这游戏太刺激了，心跳都快停了...但我们又能感受到那种挑战未知的兴奋和快乐。说真的，我现在是又害怕又期待，紧张得手心都在冒汗！</td>
+                        <td><div class="demo-item"><audio controls><source src="ex5/15/bage_15.wav" type="audio/wav"></audio></div></td>
+                    </tr>
+
+
+
                 </table>
             </div>
         </div>
-        -->
 
     </div>
 
@@ -380,8 +411,8 @@
                         <th style="min-width:200px;">Text</th>
                         <th>GroundTruth</th>
                         <th>Model</th>
-                        <th>Audio(duration1.0x)</th>
                         <th>Audio(duration0.75x)</th>
+                        <th>Audio(duration1.0x)</th>
                         <th>Audio(duriation1.25x)</th>
                     </tr>
                     <tr>
