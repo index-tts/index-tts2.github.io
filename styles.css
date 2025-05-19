@@ -83,14 +83,15 @@ tr:hover {
 }
 audio {
     margin-top: 10px;
-    width:230px;
+    width: 230px;
+    height: 40px;
 }
 .paper-description {
     line-height: 1.6;
 }
 .footer {
     text-align: center;
-    margin-top: 40px;
+    margin-t4p: 40px;
     font-size: 14px;
     color: #888;
 }
