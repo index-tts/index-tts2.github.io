@@ -26,15 +26,14 @@
         <!-- contents -->
         <h2>Contents</h2>
         <ul>
-            <!--li><a href="#section0">1 Paper Introduction</a></li-->
-            <li><a href="#section1">1 Controllability: Zero-Shot TTS with Emotionally Expressive Speech</a></li>
-                <ul>
-                    <li><a href="#section1.1">1.1 Using Identical Prompt</a></li>
-                    <li><a href="#section1.2">1.2 Using Different Prompts</a></li>
-                    <li><a href="#section1.3">1.3 Using Textual Description</a></li>
-                </ul>
+            <li><a href="#section1">1 Controllability: Zero-Shot TTS with Adjustable Speech Duration</a></li>
 
-            <li><a href="#section2">2 Controllability: Zero-Shot TTS with Adjustable Speech Duration</a></li>
+            <li><a href="#section2">2 Controllability: Zero-Shot TTS with Emotionally Expressive Speech</a></li>
+                <ul>
+                    <li><a href="#section2.1">2.1 Using Identical Prompt</a></li>
+                    <li><a href="#section2.2">2.2 Using Different Prompts</a></li>
+                    <li><a href="#section2.3">2.3 Using Textual Description</a></li>
+                </ul>
 
             <li><a href="#section3">3 Zero-Shot TTS Comparison With Others(Open-source data)</a></li>
                 <ul>
@@ -48,9 +47,126 @@
 
     <!-- page 1 -->
     <div class="container" id="section1">
-        <h2>1 Controllability: Zero-Shot TTS with Emotionally Expressive Speech</h2>
-        <h4>IndexTTS2 is capable of accurately reconstructing the emotional content present in the prompt audio. Thanks to the model’s effective disentanglement of emotional attributes from speaker-related features, users can explicitly control the target emotion by providing an additional emotiona audio prompt, enabling the synthesis of speech with specified emotional expressions. Moreover, our framework is well integrated with a natural language-driven emotional modulation mechanism, enabling precise and semantically meaningful emotion customization.</h4>
-        <h3 id="section1.1">1.1 Using Identical Prompt</h3>
+        <h2>1 Controllability: Zero-Shot TTS with Adjustable Speech Duration</h2>
+
+        <h4><font class="highlight">IndexTTS2 achieves, for the first time, precise control over speech duration in autoregressive TTS models.</font> This section demonstrates the model's capability in duration-controlled synthesis, where three different target durations are specified for each test case. Due to the lack of existing autoregressive TTS models with comparable duration control capabilities, we adopt non-autoregressive models as the baselines in this part.</h4>
+        <div class="demo-section">
+            <div class="table-container">
+                <table class="zebra-table">
+                    <tr>
+                        <th>Audio-Prompt</th>
+                        <th style="min-width:200px;">Text</th>
+                        <th>GroundTruth</th>
+                        <th>Model</th>
+                        <th>Audio(duration0.75x)</th>
+                        <th>Audio(duration1.0x)</th>
+                        <th>Audio(duriation1.25x)</th>
+                    </tr>
+
+<!-- TODO  mark-->
+                    <tr>
+                        <td rowspan="3"> <div class="demo-item"><audio controls><source src="ex4/en/943/prompt.wav " type="audio/wav"></audio></div></td>
+                        <td rowspan="3">The equipment needed to do this includes rock saws and polishers.</td>
+                        <td rowspan="3"> <div class="demo-item"><audio controls><source src="ex4/en/943/gt.wav " type="audio/wav"></audio></div></td>
+                        <td>IndexTTS2</td>
+                        <td><div class="demo-item"><audio controls><source src="ex4/en/943/indextts2_943_gt0.75.wav" type="audio/wav"></audio></div></td>
+                        <td><div class="demo-item"><audio controls><source src="ex4/en/943/indextts2_943_gt.wav" type="audio/wav"></audio></div></td>
+                        <td><div class="demo-item"><audio controls><source src="ex4/en/943/indextts2_943_gt1.25.wav" type="audio/wav"></audio></div></td>
+                    </tr>
+                    <tr>
+                        <td>MaskGCT</td>
+                        <td><div class="demo-item"><audio controls><source src="ex4/en/943/maskgct_943_gt0.75.wav" type="audio/wav"></audio></div></td>
+                        <td><div class="demo-item"><audio controls><source src="ex4/en/943/maskgct_943_gt.wav" type="audio/wav"></audio></div></td>
+                        <td><div class="demo-item"><audio controls><source src="ex4/en/943/maskgct_943_gt1.25.wav" type="audio/wav"></audio></div></td>
+                    </tr>
+                    <tr>
+                        <td>F5-TTS</td>
+                        <td><div class="demo-item"><audio controls><source src="ex4/en/943/f5_943_gt0.75.wav" type="audio/wav"></audio></div></td>
+                        <td><div class="demo-item"><audio controls><source src="ex4/en/943/f5_943_gt.wav" type="audio/wav"></audio></div></td>
+                        <td><div class="demo-item"><audio controls><source src="ex4/en/943/f5_943_gt1.25.wav" type="audio/wav"></audio></div></td>
+                    </tr>
+
+<!-- TODO  mark-->
+                    <tr>
+                        <td rowspan="3"> <div class="demo-item"><audio controls><source src="ex4/en/1037/prompt.wav " type="audio/wav"></audio></div></td>
+                        <td rowspan="3">There is no wine in this country, the young man said.</td>
+                        <td rowspan="3"> <div class="demo-item"><audio controls><source src="ex4/en/1037/gt.wav " type="audio/wav"></audio></div></td>
+                        <td>IndexTTS2</td>
+                        <td><div class="demo-item"><audio controls><source src="ex4/en/1037/indextts2_1037_gt0.75.wav" type="audio/wav"></audio></div></td>
+                        <td><div class="demo-item"><audio controls><source src="ex4/en/1037/indextts2_1037_gt.wav" type="audio/wav"></audio></div></td>
+                        <td><div class="demo-item"><audio controls><source src="ex4/en/1037/indextts2_1037_gt1.25.wav" type="audio/wav"></audio></div></td>
+                    </tr>
+                    <tr>
+                        <td>MaskGCT</td>
+                        <td><div class="demo-item"><audio controls><source src="ex4/en/1037/maskgct_1037_gt0.75.wav" type="audio/wav"></audio></div></td>
+                        <td><div class="demo-item"><audio controls><source src="ex4/en/1037/maskgct_1037_gt.wav" type="audio/wav"></audio></div></td>
+                        <td><div class="demo-item"><audio controls><source src="ex4/en/1037/maskgct_1037_gt1.25.wav" type="audio/wav"></audio></div></td>
+                    </tr>
+                    <tr>
+                        <td>F5-TTS</td>
+                        <td><div class="demo-item"><audio controls><source src="ex4/en/1037/f5_1037_gt0.75.wav" type="audio/wav"></audio></div></td>
+                        <td><div class="demo-item"><audio controls><source src="ex4/en/1037/f5_1037_gt.wav" type="audio/wav"></audio></div></td>
+                        <td><div class="demo-item"><audio controls><source src="ex4/en/1037/f5_1037_gt1.25.wav" type="audio/wav"></audio></div></td>
+                    </tr>
+
+<!-- TODO  mark-->
+                    <tr>
+                        <td rowspan="3"> <div class="demo-item"><audio controls><source src="ex4/zh/289/prompt.wav " type="audio/wav"></audio></div></td>
+                        <td rowspan="3">只有当科技为本地社群创造价值的时候，才真正有意义。</td>
+                        <td rowspan="3"> <div class="demo-item"><audio controls><source src="ex4/zh/289/gt.wav " type="audio/wav"></audio></div></td>
+                        <td>IndexTTS2</td>
+                        <td><div class="demo-item"><audio controls><source src="ex4/zh/289/indextts2_289_gt0.75.wav" type="audio/wav"></audio></div></td>
+                        <td><div class="demo-item"><audio controls><source src="ex4/zh/289/indextts2_289_gt.wav" type="audio/wav"></audio></div></td>
+                        <td><div class="demo-item"><audio controls><source src="ex4/zh/289/indextts2_289_gt1.25.wav" type="audio/wav"></audio></div></td>
+                    </tr>
+                    <tr>
+                        <td>MaskGCT</td>
+                        <td><div class="demo-item"><audio controls><source src="ex4/zh/289/maskgct_289_gt0.75.wav" type="audio/wav"></audio></div></td>
+                        <td><div class="demo-item"><audio controls><source src="ex4/zh/289/maskgct_289_gt.wav" type="audio/wav"></audio></div></td>
+                        <td><div class="demo-item"><audio controls><source src="ex4/zh/289/maskgct_289_gt1.25.wav" type="audio/wav"></audio></div></td>
+                    </tr>
+                    <tr>
+                        <td>F5-TTS</td>
+                        <td><div class="demo-item"><audio controls><source src="ex4/zh/289/f5_289_gt0.75.wav" type="audio/wav"></audio></div></td>
+                        <td><div class="demo-item"><audio controls><source src="ex4/zh/289/f5_289_gt.wav" type="audio/wav"></audio></div></td>
+                        <td><div class="demo-item"><audio controls><source src="ex4/zh/289/f5_289_gt1.25.wav" type="audio/wav"></audio></div></td>
+                    </tr>
+
+<!-- TODO  mark-->
+                    <tr>
+                        <td rowspan="3"> <div class="demo-item"><audio controls><source src="ex4/zh/319/prompt.wav " type="audio/wav"></audio></div></td>
+                        <td rowspan="3">类推可用于颠覆惯性思维，以便为新的创意开路。</td>
+                        <td rowspan="3"> <div class="demo-item"><audio controls><source src="ex4/zh/319/gt.wav " type="audio/wav"></audio></div></td>
+                        <td>IndexTTS2</td>
+                        <td><div class="demo-item"><audio controls><source src="ex4/zh/319/indextts2_319_gt0.75.wav" type="audio/wav"></audio></div></td>
+                        <td><div class="demo-item"><audio controls><source src="ex4/zh/319/indextts2_319_gt.wav" type="audio/wav"></audio></div></td>
+                        <td><div class="demo-item"><audio controls><source src="ex4/zh/319/indextts2_319_gt1.25.wav" type="audio/wav"></audio></div></td>
+                    </tr>
+                    <tr>
+                        <td>MaskGCT</td>
+                        <td><div class="demo-item"><audio controls><source src="ex4/zh/319/maskgct_319_gt0.75.wav" type="audio/wav"></audio></div></td>
+                        <td><div class="demo-item"><audio controls><source src="ex4/zh/319/maskgct_319_gt.wav" type="audio/wav"></audio></div></td>
+                        <td><div class="demo-item"><audio controls><source src="ex4/zh/319/maskgct_319_gt1.25.wav" type="audio/wav"></audio></div></td>
+                    </tr>
+                    <tr>
+                        <td>F5-TTS</td>
+                        <td><div class="demo-item"><audio controls><source src="ex4/zh/319/f5_319_gt0.75.wav" type="audio/wav"></audio></div></td>
+                        <td><div class="demo-item"><audio controls><source src="ex4/zh/319/f5_319_gt.wav" type="audio/wav"></audio></div></td>
+                        <td><div class="demo-item"><audio controls><source src="ex4/zh/319/f5_319_gt1.25.wav" type="audio/wav"></audio></div></td>
+                    </tr>
+
+                </table>
+            </div>
+        </div>
+
+    </div>
+
+
+    <!-- page 2 -->
+    <div class="container" id="section2">
+        <h2>2 Controllability: Zero-Shot TTS with Emotionally Expressive Speech</h2>
+        <h4><font class="highlight">IndexTTS2 is capable of accurately reconstructing the emotional content present in the prompt audio.</font> Thanks to the model’s effective disentanglement of emotional attributes from speaker-related features, users can explicitly control the target emotion by providing an additional emotional audio prompt, enabling the synthesis of speech with specified emotional expressions. Moreover, our framework is well integrated with a natural language-driven emotional modulation mechanism, enabling precise and semantically meaningful emotion customization.</h4>
+        <h3 id="section2.1">2.1 Using Identical Prompt</h3>
         <h4>We use the same audio prompt across all input conditions, meaning that the reference for both timbre and emotion is based on the exact same audio content. This design ensures that any variation in the generated speech comes purely from the target emotion or timbre, eliminating confounding factors introduced by using different emotional prompts from other timbres.</h4>
         <div class="demo-section">
             <div class="table-container">
@@ -256,7 +372,7 @@
             </div>
         </div>
 
-        <h3 id="section1.2">1.2 Using Different Prompts</h3>
+        <h3 id="section2.2">2.2 Using Different Prompts</h3>
         <h4>We employ distinct audio prompts as references for timbre and emotional expression, respectively, such that speaker-related timbral characteristics and emotion-related prosodic and intonational features are derived from separate audio sources. This ablation study enables a more effective validation of the emotion modulation mechanism, eliminating confounding effects caused by variations in timbre.</h4>
         <div class="demo-section">
             <div class="table-container">
@@ -333,7 +449,7 @@
             </div>
         </div>
 
-        <h3 id="section1.3">1.3 Using Textual Description</h3>
+        <h3 id="section2.3">2.3 Using Textual Description</h3>
         <h4>In this alternative approach, we replace the emotional audio reference with a descriptive textual prompt, while maintaining the timbre reference audio unchanged. This allows the model to condition emotional expression solely on text-based emotion cues rather than on audio signals. Such a setup facilitates the investigation of the model’s capability to generate emotionally expressive speech guided by linguistic descriptions, providing insights into the effectiveness of text-driven emotion control without relying on emotion audio prompts.</h4>
         <div class="demo-section">
             <div class="table-container">
@@ -399,122 +515,6 @@
                     </tr>
 
 
-
-                </table>
-            </div>
-        </div>
-
-    </div>
-
-    <!-- page 2 -->
-    <div class="container" id="section2">
-        <h2>2 Controllability: Zero-Shot TTS with Adjustable Speech Duration</h2>
-
-        <h4>IndexTTS2 achieves, for the first time, precise control over speech duration in autoregressive TTS models. This section demonstrates the model's capability in duration-controlled synthesis, where three different target durations are specified for each test case. Due to the lack of existing autoregressive TTS models with comparable duration control capabilities, we adopt non-autoregressive models as the baselines in this part.</h4>
-        <div class="demo-section">
-            <div class="table-container">
-                <table class="zebra-table">
-                    <tr>
-                        <th>Audio-Prompt</th>
-                        <th style="min-width:200px;">Text</th>
-                        <th>GroundTruth</th>
-                        <th>Model</th>
-                        <th>Audio(duration0.75x)</th>
-                        <th>Audio(duration1.0x)</th>
-                        <th>Audio(duriation1.25x)</th>
-                    </tr>
-
-<!-- TODO  mark-->
-                    <tr>
-                        <td rowspan="3"> <div class="demo-item"><audio controls><source src="ex4/en/943/prompt.wav " type="audio/wav"></audio></div></td>
-                        <td rowspan="3">The equipment needed to do this includes rock saws and polishers.</td>
-                        <td rowspan="3"> <div class="demo-item"><audio controls><source src="ex4/en/943/gt.wav " type="audio/wav"></audio></div></td>
-                        <td>IndexTTS2</td>
-                        <td><div class="demo-item"><audio controls><source src="ex4/en/943/indextts2_943_gt0.75.wav" type="audio/wav"></audio></div></td>
-                        <td><div class="demo-item"><audio controls><source src="ex4/en/943/indextts2_943_gt.wav" type="audio/wav"></audio></div></td>
-                        <td><div class="demo-item"><audio controls><source src="ex4/en/943/indextts2_943_gt1.25.wav" type="audio/wav"></audio></div></td>
-                    </tr>
-                    <tr>
-                        <td>MaskGCT</td>
-                        <td><div class="demo-item"><audio controls><source src="ex4/en/943/maskgct_943_gt0.75.wav" type="audio/wav"></audio></div></td>
-                        <td><div class="demo-item"><audio controls><source src="ex4/en/943/maskgct_943_gt.wav" type="audio/wav"></audio></div></td>
-                        <td><div class="demo-item"><audio controls><source src="ex4/en/943/maskgct_943_gt1.25.wav" type="audio/wav"></audio></div></td>
-                    </tr>
-                    <tr>
-                        <td>F5-TTS</td>
-                        <td><div class="demo-item"><audio controls><source src="ex4/en/943/f5_943_gt0.75.wav" type="audio/wav"></audio></div></td>
-                        <td><div class="demo-item"><audio controls><source src="ex4/en/943/f5_943_gt.wav" type="audio/wav"></audio></div></td>
-                        <td><div class="demo-item"><audio controls><source src="ex4/en/943/f5_943_gt1.25.wav" type="audio/wav"></audio></div></td>
-                    </tr>
-
-<!-- TODO  mark-->
-                    <tr>
-                        <td rowspan="3"> <div class="demo-item"><audio controls><source src="ex4/en/1037/prompt.wav " type="audio/wav"></audio></div></td>
-                        <td rowspan="3">There is no wine in this country, the young man said.</td>
-                        <td rowspan="3"> <div class="demo-item"><audio controls><source src="ex4/en/1037/gt.wav " type="audio/wav"></audio></div></td>
-                        <td>IndexTTS2</td>
-                        <td><div class="demo-item"><audio controls><source src="ex4/en/1037/indextts2_1037_gt0.75.wav" type="audio/wav"></audio></div></td>
-                        <td><div class="demo-item"><audio controls><source src="ex4/en/1037/indextts2_1037_gt.wav" type="audio/wav"></audio></div></td>
-                        <td><div class="demo-item"><audio controls><source src="ex4/en/1037/indextts2_1037_gt1.25.wav" type="audio/wav"></audio></div></td>
-                    </tr>
-                    <tr>
-                        <td>MaskGCT</td>
-                        <td><div class="demo-item"><audio controls><source src="ex4/en/1037/maskgct_1037_gt0.75.wav" type="audio/wav"></audio></div></td>
-                        <td><div class="demo-item"><audio controls><source src="ex4/en/1037/maskgct_1037_gt.wav" type="audio/wav"></audio></div></td>
-                        <td><div class="demo-item"><audio controls><source src="ex4/en/1037/maskgct_1037_gt1.25.wav" type="audio/wav"></audio></div></td>
-                    </tr>
-                    <tr>
-                        <td>F5-TTS</td>
-                        <td><div class="demo-item"><audio controls><source src="ex4/en/1037/f5_1037_gt0.75.wav" type="audio/wav"></audio></div></td>
-                        <td><div class="demo-item"><audio controls><source src="ex4/en/1037/f5_1037_gt.wav" type="audio/wav"></audio></div></td>
-                        <td><div class="demo-item"><audio controls><source src="ex4/en/1037/f5_1037_gt1.25.wav" type="audio/wav"></audio></div></td>
-                    </tr>
-
-<!-- TODO  mark-->
-                    <tr>
-                        <td rowspan="3"> <div class="demo-item"><audio controls><source src="ex4/zh/289/prompt.wav " type="audio/wav"></audio></div></td>
-                        <td rowspan="3">只有当科技为本地社群创造价值的时候，才真正有意义。</td>
-                        <td rowspan="3"> <div class="demo-item"><audio controls><source src="ex4/zh/289/gt.wav " type="audio/wav"></audio></div></td>
-                        <td>IndexTTS2</td>
-                        <td><div class="demo-item"><audio controls><source src="ex4/zh/289/indextts2_289_gt0.75.wav" type="audio/wav"></audio></div></td>
-                        <td><div class="demo-item"><audio controls><source src="ex4/zh/289/indextts2_289_gt.wav" type="audio/wav"></audio></div></td>
-                        <td><div class="demo-item"><audio controls><source src="ex4/zh/289/indextts2_289_gt1.25.wav" type="audio/wav"></audio></div></td>
-                    </tr>
-                    <tr>
-                        <td>MaskGCT</td>
-                        <td><div class="demo-item"><audio controls><source src="ex4/zh/289/maskgct_289_gt0.75.wav" type="audio/wav"></audio></div></td>
-                        <td><div class="demo-item"><audio controls><source src="ex4/zh/289/maskgct_289_gt.wav" type="audio/wav"></audio></div></td>
-                        <td><div class="demo-item"><audio controls><source src="ex4/zh/289/maskgct_289_gt1.25.wav" type="audio/wav"></audio></div></td>
-                    </tr>
-                    <tr>
-                        <td>F5-TTS</td>
-                        <td><div class="demo-item"><audio controls><source src="ex4/zh/289/f5_289_gt0.75.wav" type="audio/wav"></audio></div></td>
-                        <td><div class="demo-item"><audio controls><source src="ex4/zh/289/f5_289_gt.wav" type="audio/wav"></audio></div></td>
-                        <td><div class="demo-item"><audio controls><source src="ex4/zh/289/f5_289_gt1.25.wav" type="audio/wav"></audio></div></td>
-                    </tr>
-
-<!-- TODO  mark-->
-                    <tr>
-                        <td rowspan="3"> <div class="demo-item"><audio controls><source src="ex4/zh/319/prompt.wav " type="audio/wav"></audio></div></td>
-                        <td rowspan="3">类推可用于颠覆惯性思维，以便为新的创意开路。</td>
-                        <td rowspan="3"> <div class="demo-item"><audio controls><source src="ex4/zh/319/gt.wav " type="audio/wav"></audio></div></td>
-                        <td>IndexTTS2</td>
-                        <td><div class="demo-item"><audio controls><source src="ex4/zh/319/indextts2_319_gt0.75.wav" type="audio/wav"></audio></div></td>
-                        <td><div class="demo-item"><audio controls><source src="ex4/zh/319/indextts2_319_gt.wav" type="audio/wav"></audio></div></td>
-                        <td><div class="demo-item"><audio controls><source src="ex4/zh/319/indextts2_319_gt1.25.wav" type="audio/wav"></audio></div></td>
-                    </tr>
-                    <tr>
-                        <td>MaskGCT</td>
-                        <td><div class="demo-item"><audio controls><source src="ex4/zh/319/maskgct_319_gt0.75.wav" type="audio/wav"></audio></div></td>
-                        <td><div class="demo-item"><audio controls><source src="ex4/zh/319/maskgct_319_gt.wav" type="audio/wav"></audio></div></td>
-                        <td><div class="demo-item"><audio controls><source src="ex4/zh/319/maskgct_319_gt1.25.wav" type="audio/wav"></audio></div></td>
-                    </tr>
-                    <tr>
-                        <td>F5-TTS</td>
-                        <td><div class="demo-item"><audio controls><source src="ex4/zh/319/f5_319_gt0.75.wav" type="audio/wav"></audio></div></td>
-                        <td><div class="demo-item"><audio controls><source src="ex4/zh/319/f5_319_gt.wav" type="audio/wav"></audio></div></td>
-                        <td><div class="demo-item"><audio controls><source src="ex4/zh/319/f5_319_gt1.25.wav" type="audio/wav"></audio></div></td>
-                    </tr>
 
                 </table>
             </div>
