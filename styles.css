@@ -64,9 +64,11 @@ td {
     color: #444;
     font-size: 16px;
 }
+/*
 tr:nth-child(odd) {
     background: rgba(240, 243, 248, 0.5);
 }
+*/
 tr:hover {
     background: rgba(200, 220, 255, 0.3);
     transition: 0.3s;

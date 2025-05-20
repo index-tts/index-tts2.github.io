@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>IndexTTS2: A Breakthrough in Emotionally Expressive and Duration-Controlled Auto-Regressive Zero-Shot Text-to-Speech</title>
     <link rel="stylesheet" href="styles.css">
+    <script src="script.js"></script>
 </head>
 <body>
 
@@ -53,7 +54,7 @@
         <h4>We use the same audio prompt across all input conditions, meaning that the reference for both timbre and emotion is based on the exact same audio content. This design ensures that any variation in the generated speech comes purely from the target emotion or timbre, eliminating confounding factors introduced by using different emotional prompts from other timbres.</h4>
         <div class="demo-section">
             <div class="table-container">
-                <table>
+                <table class="zebra-table">
                     <tr>
                         <th style="width:50px">Emotion</th>
                         <th>Audio-Prompt</th>
@@ -260,7 +261,7 @@
         <div class="demo-section">
             <div class="table-container">
                 <!--table style="width:100%"-->
-                <table>
+                <table class="zebra-table">
                     <tr>
                         <th style="min-width:200px;">Timbre-Audio-Prompt</th>
                         <th style="min-width:200px;">Emotion-Audio-Prompt</th>
@@ -336,7 +337,7 @@
         <h4>In this alternative approach, we replace the emotional audio reference with a descriptive textual prompt, while maintaining the timbre reference audio unchanged. This allows the model to condition emotional expression solely on text-based emotion cues rather than on audio signals. Such a setup facilitates the investigation of the model’s capability to generate emotionally expressive speech guided by linguistic descriptions, providing insights into the effectiveness of text-driven emotion control without relying on emotion audio prompts.</h4>
         <div class="demo-section">
             <div class="table-container">
-                <table>
+                <table class="zebra-table">
                     <tr>
                         <th style="min-width:200px;">Timbre-Audio-Prompt</th>
                         <th>Emotion-Description</th>
@@ -412,7 +413,7 @@
         <h4>IndexTTS2 achieves, for the first time, precise control over speech duration in autoregressive TTS models. This section demonstrates the model's capability in duration-controlled synthesis, where three different target durations are specified for each test case. Due to the lack of existing autoregressive TTS models with comparable duration control capabilities, we adopt non-autoregressive models as the baselines in this part.</h4>
         <div class="demo-section">
             <div class="table-container">
-                <table>
+                <table class="zebra-table">
                     <tr>
                         <th>Audio-Prompt</th>
                         <th style="min-width:200px;">Text</th>
@@ -528,7 +529,7 @@
         <div class="demo-section">
             <div class="table-container">
                 <!--table style="width:100%"-->
-                <table>
+                <table class="zebra-table">
                     <tr>
                         <th style="min-width:90px">Emotion</th>
                         <th>Audio-Prompt</th>
@@ -716,7 +717,7 @@
         <h3 id="section3.2">3.2 Cross-Lingual Speech Synthesis</h3>
         <div class="demo-section">
             <div class="table-container">
-                <table>
+                <table class="zebra-table">
                     <tr>
                         <th style="min-width:90px">Emotion</th>
                         <th>Timbre-Audio-Prompt</th>
@@ -760,5 +761,16 @@
     <div class="footer">
         <p>© 2025 May, Index SpeechTeam. All rights reserved.</p>
     </div>
+
+    <script>
+    window.addEventListener("DOMContentLoaded", () => {
+        const tables = document.querySelectorAll(".zebra-table");
+
+    tables.forEach(table => {
+        logicalTableStyle(table);
+    });
+  });
+
+    </script>
 </body>
 </html>
