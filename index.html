@@ -52,7 +52,7 @@
         <h4><font class="highlight">IndexTTS2 achieves, for the first time, precise control over speech duration in autoregressive TTS models.</font> This section demonstrates the model's capability in duration-controlled synthesis, where three different target durations are specified for each test case. Due to the lack of existing autoregressive TTS models with comparable duration control capabilities, we adopt non-autoregressive models as the baselines in this part.</h4>
         <div class="demo-section">
             <div class="table-container">
-                <table class="zebra-table">
+                <table class="zebra-table" id="section1-table">
                     <tr>
                         <th>Audio-Prompt</th>
                         <th style="min-width:200px;">Text</th>
@@ -462,7 +462,7 @@
                     </tr>
                     
                     <tr>
-                        <td rowspan="3"> <div class="demo-item"><audio controls><source src="ex5/5/bage.wav" type="audio/wav"></audio></div></td>
+                        <td rowspan="6"> <div class="demo-item"><audio controls><source src="ex5/5/bage.wav" type="audio/wav"></audio></div></td>
                         <td>I feel really down</td>
                         <td rowspan="3">这究竟是我的福，还是我的孽？岂止是皇上错了，我更是错了！这几年的情爱与时光，究竟是错付了！</td>
                         <td><div class="demo-item"><audio controls><source src="ex5/5/bage_gen_1.wav" type="audio/wav"></audio></div></td>
@@ -475,22 +475,47 @@
                         <td>巨巨巨巨巨巨巨巨难过</td>
                         <td><div class="demo-item"><audio controls><source src="ex5/5/bage_gen_3.wav" type="audio/wav"></audio></div></td>
                     </tr>
+                        <td>I feel really down</td>
+                        <td rowspan="3">Was this my blessing, or my curse? It’s not just the Emperor who was wrong — I was even more mistaken! All these years of love and devotion… in the end, were they nothing but a wasted heart?</td>
+                        <td><div class="demo-item"><audio controls><source src="ex5/5/bage_gen_11.wav" type="audio/wav"></audio></div></td>
+                    </tr>
+                    <tr>
+                        <td>有点快乐，哈哈</td>
+                        <td><div class="demo-item"><audio controls><source src="ex5/5/bage_gen_12.wav" type="audio/wav"></audio></div></td>
+                    </tr>
+                    <tr>
+                        <td>巨巨巨巨巨巨巨巨难过</td>
+                        <td><div class="demo-item"><audio controls><source src="ex5/5/bage_gen_13.wav" type="audio/wav"></audio></div></td>
+                    </tr>
+
 
                     <tr>
-                        <td rowspan="3"> <div class="demo-item"><audio controls><source src="ex5/6/tangxi.wav" type="audio/wav"></audio></div></td>
-                        <td>书桓走的第一天，想他，想他，想他。</td>
+                        <td rowspan="6"> <div class="demo-item"><audio controls><source src="ex5/6/tangxi.wav" type="audio/wav"></audio></div></td>
+                        <td rowspan="2">书桓走的第一天，想他，想他，想他。</td>
                         <td>书桓走的第一天，想他，想他，想他。</td>
                         <td><div class="demo-item"><audio controls><source src="ex5/6/tangxi_gen_1.wav" type="audio/wav"></audio></div></td>
                     </tr>
                     <tr>
-                        <td>书桓走的第二天，想他，想他，想他。</td>
+                        <td>On the first day that Shuhan left, all I did was miss him. Miss him. Miss him.</td>
+                        <td><div class="demo-item"><audio controls><source src="ex5/6/tangxi_gen_11.wav" type="audio/wav"></audio></div></td>
+                    </tr>
+                    <tr>
+                        <td rowspan="2">书桓走的第二天，想他，想他，想他。</td>
                         <td>书桓走的第二天，想他，想他，想他。</td>
                         <td><div class="demo-item"><audio controls><source src="ex5/6/tangxi_gen_2.wav" type="audio/wav"></audio></div></td>
                     </tr>
                     <tr>
-                        <td>书桓走了第三天了，想他，想他，想他，发疯一样的想他。</td>
+                        <td>The second day Shuhan is gone, and still — I miss him. I miss him. I miss him.</td>
+                        <td><div class="demo-item"><audio controls><source src="ex5/6/tangxi_gen_12.wav" type="audio/wav"></audio></div></td>
+                    </tr>
+                    <tr>
+                        <td rowspan="2">书桓走了第三天了，想他，想他，想他，发疯一样的想他。</td>
                         <td>书桓走了第三天了，想他，想他，想他，发疯一样的想他。</td>
                         <td><div class="demo-item"><audio controls><source src="ex5/6/tangxi_gen_3.wav" type="audio/wav"></audio></div></td>
+                    </tr>
+                    <tr>
+                        <td>he third day Shuhan has been gone… and I still miss him. Miss him. Miss him. I miss him like I've lost my mind.</td>
+                        <td><div class="demo-item"><audio controls><source src="ex5/6/tangxi_gen_13.wav" type="audio/wav"></audio></div></td>
                     </tr>
 
                     <tr>
@@ -683,14 +708,12 @@
     </div>
 
     <script>
-    window.addEventListener("DOMContentLoaded", () => {
-        const tables = document.querySelectorAll(".zebra-table");
-
-    tables.forEach(table => {
-        logicalTableStyle(table);
-    });
-  });
-
+        window.addEventListener("DOMContentLoaded", () => {
+            const tables = document.querySelectorAll(".zebra-table");
+            tables.forEach(table => {
+                logicalTableStyle(table);
+            });
+        });
     </script>
 </body>
 </html>

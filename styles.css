@@ -80,6 +80,7 @@ tr:hover {
     background: rgba(200, 220, 255, 0.3);
     transition: 0.3s;
 }
+
 .demo-section, .paper-section {
     margin-top: 20px;
 }
