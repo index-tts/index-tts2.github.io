@@ -62,11 +62,11 @@ th {
     background: linear-gradient(135deg, #b2cbf8, #b2cbf8);
     color: white;
     font-weight: 600;
-    padding: 14px;
+    padding: 7px;
     text-align: center;
 }
 td {
-    padding: 14px;
+    padding: 7px;
     text-align: center;
     color: #444;
     font-size: 16px;
@@ -92,7 +92,7 @@ tr:hover {
     font-size: 16px;
 }
 audio {
-    margin-top: 10px;
+    margin-top: 5px;
     width: 230px;
     height: 40px;
 }
