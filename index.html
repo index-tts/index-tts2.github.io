@@ -10,19 +10,51 @@
 <body>
 
     <!-- Page 0 -->
-    <div class="container" id="section0">
+    <section class="container" id="section0">
         <h1>IndexTTS2: A Breakthrough in Emotionally Expressive and Duration-Controlled Auto-Regressive Zero-Shot Text-to-Speech</h1>
         <div class="author">
             <p>Index SpeechTeam</p>
         </div>
 
         <!-- paper -->
-        <div class="paper-section">
+        <section class="paper-section">
             <h2>Abstract</h2>
             <p class="paper-description">
                 Large-scale text-to-speech (TTS)  models are typically categorized into autoregressive and non-autoregressive systems. Although autoregressive systems exhibit certain advantages in speech naturalness, their token-by-token generation mechanism makes it difficult to precisely control the duration of the synthesized speech. This becomes a significant limitation in applications such as video dubbing, where strict audio-visual synchronization is required. This paper introduces IndexTTS2, which proposes a novel, general, and autoregressive-model-friendly method for speech duration control. The method supports two generation modes: one allows explicit specification of the number of generated tokens, thereby enabling precise control over speech duration; the other does not require manual token count input, letting the model freely generate speech in an autoregressive manner while faithfully reproducing prosodic characteristics from the input prompt. Furthermore, IndexTTS2 achieves disentanglement between emotional expression and speaker identity, enabling independent control of timbre and emotion. In the zero-shot setting, the model is capable of perfectly reproducing the emotional characteristics inherent in the input prompt. Additionally, users may provide a separate emotion prompt (which can originate from a different speaker than the timbre prompt), thereby enabling the model to accurately reconstruct the target timbre while conveying the specified emotional tone. In order to enhance the clarity of speech during strong emotional expressions, we incorporate GPT latent representations to improve the stability of the generated speech. Meanwhile, to lower the barrier for emotion control, we design a soft instruction mechanism based on textual descriptions by fine-tuning Qwen3. This facilitates the effective guidance of speech generation with the desired emotional tendencies through natural language input. Finally, experimental results on multiple datasets demonstrate that IndexTTS2 outperforms existing state-of-the-art zero-shot TTS models in terms of word error rate, speaker similarity, and emotional fidelity. To promote further research and facilitate practical adoption, we will release both the model weights and inference code, enabling the community to reproduce and build upon our work.
             </p>
-        </div>
+        </section>
+
+        <section class="video-section">
+            <div class="video-grid">
+                <!-- 1st video -->
+                <div class="video-card">
+                    <video class="intro-video" controls poster="ex6/Empresses_in_the_Palace_1.png">
+                        <source src="ex6/Empresses_in_the_Palace_1.mp4" type="video/mp4">
+                        Your browser does not support the video tag.
+                    </video>
+                    <div class="video-caption">
+                        <div class="caption-text">IndexTTS2: Controllable Emotional Speech Generation for Audiovisual Dubbing – A Case Study on Iconic Scenes from Empresses in t    he Palac</div>
+                    </div>
+                </div>
+
+                <!-- 2nd video -->
+                <!--
+                <div class="video-card">
+                    <video class="intro-video" controls poster="poster2.jpg">
+                        <source src="indextts2_promo2.mp4" type="video/mp4">
+                        Your browser does not support the video tag.
+                    </video>
+                    <div class="video-caption">
+                        <div class="caption-text">跨语言、强情感、多场景重建演示</div>
+                    </div>
+                </div>
+                -->
+
+            </div>
+        </section>
+
+
+
         <!-- contents -->
         <h2>Contents</h2>
         <ul>
@@ -41,12 +73,12 @@
                     <!--<li><a href="#section3.2">3.2 Cross-Lingual Speech Synthesis</a></li>-->
                 </ul>
         </ul>
-    </div>
+    </section>
 
     <!-- Demo Section -->
 
     <!-- page 1 -->
-    <div class="container" id="section1">
+    <section class="container" id="section1">
         <h2>1 Controllability: Zero-Shot TTS with Adjustable Speech Duration</h2>
 
         <h4><font class="highlight">IndexTTS2 achieves, for the first time, precise control over speech duration in autoregressive TTS models.</font> This section demonstrates the model's capability in duration-controlled synthesis, where three different target durations are specified for each test case. Due to the lack of existing autoregressive TTS models with comparable duration control capabilities, we adopt non-autoregressive models as the baselines in this part.</h4>
@@ -159,11 +191,11 @@
             </div>
         </div>
 
-    </div>
+    </section>
 
 
     <!-- page 2 -->
-    <div class="container" id="section2">
+    <section class="container" id="section2">
         <h2>2 Controllability: Zero-Shot TTS with Emotionally Expressive Speech</h2>
         <h4><font class="highlight">IndexTTS2 is capable of accurately reconstructing the emotional content present in the prompt audio.</font> Thanks to the model’s effective disentanglement of emotional attributes from speaker-related features, users can explicitly control the target emotion by providing an additional emotional audio prompt, enabling the synthesis of speech with specified emotional expressions. Moreover, our framework is well integrated with a natural language-driven emotional modulation mechanism, enabling precise and semantically meaningful emotion customization.</h4>
         <h3 id="section2.1">2.1 Using Identical Prompt</h3>
@@ -545,10 +577,10 @@
             </div>
         </div>
 
-    </div>
+    </section>
 
     <!-- page 3 -->
-    <div class="container" id="section3">
+    <section class="container" id="section3">
         <h2>3 Zero-Shot TTS Comparison With Others(Open-source data)</h2>
         <h3 id="section3.1">3.1 Monolingual Speech Synthesis</h3>
         <div class="demo-section">
@@ -658,47 +690,8 @@
             </div>
         </div>
 
-        <!--
-        <h3 id="section3.2">3.2 Cross-Lingual Speech Synthesis</h3>
-        <div class="demo-section">
-            <div class="table-container">
-                <table class="zebra-table">
-                    <tr>
-                        <th style="min-width:90px">Emotion</th>
-                        <th>Timbre-Audio-Prompt</th>
-                        <th>Emotion-Audio-Prompt</th>
-                        <th style="min-width:200px;">Text</th>
-                        <th>GroundTruth</th>
-                        <th>IndexTTS2</th>
-                        <th>IndexTTS2-wog</th>
-                        <th>IndexTTS2-wos2m</th>
-                        <th>IndexTTS</th>
-                        <th>MaskGCT</th>
-                        <th>CosyVoice2</th>
-                        <th>SparkTTS</th>
-                        <th>F5-TTS</th>
-                    </tr>
-                    
-                    <tr>
-                        <td>Speaker-1</td>
-                        <td colspan="2"> <div class="demo-item"><audio controls><source src="ex3/prompt/0296.aac" type="audio/aac"></audio></div></td>
-                        <td>家居养娃的李娜又重新出现在媒体大众的面前</td>
-                        <td><div class="demo-item"><audio controls><source src="ex4/out/gt/0296.aac" type="audio/aac"></audio></div></td>
-                        <td><div class="demo-item"><audio controls><source src="ex4/out/indextts2/0296.aac" type="audio/aac"></audio></div></td>
-                        <td><div class="demo-item"><audio controls><source src="ex4/out/indextts2_wog/0296.aac" type="audio/aac"></audio></div></td>
-                        <td><div class="demo-item"><audio controls><source src="ex4/out/indextts2_wos2m/0296.aac" type="audio/aac"></audio></div></td>
-                        <td><div class="demo-item"><audio controls><source src="ex4/out/indextts/0296.aac" type="audio/aac"></audio></div></td>
-                        <td><div class="demo-item"><audio controls><source src="ex4/out/maskgct/0296.aac" type="audio/aac"></audio></div></td>
-                        <td><div class="demo-item"><audio controls><source src="ex4/out/cosyvoice2/0296.aac" type="audio/aac"></audio></div></td>
-                        <td><div class="demo-item"><audio controls><source src="ex4/out/sparktts/0296.aac" type="audio/aac"></audio></div></td>
-                        <td><div class="demo-item"><audio controls><source src="ex4/out/f5/0296.aac" type="audio/aac"></audio></div></td>
-                    </tr>
-                </table>
-            </div>
-        </div>
-        -->
 
-    </div>
+    </section>
 
 
 

@@ -96,6 +96,58 @@ audio {
     width: 230px;
     height: 40px;
 }
+.video-section {
+  width: 100%;
+  padding: 40px 0;
+  background: #f8f9fa;
+  display: flex;
+  justify-content: center;
+}
+
+.video-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 24px;
+  max-width: 960px;
+  width: 90%;
+}
+
+.video-card {
+  background: #ffffff;
+  border-radius: 16px;
+  overflow: hidden;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
+  display: flex;
+  flex-direction: column;
+}
+
+.intro-video {
+  width: 100%;
+  height: auto;
+  display: block;
+  border: none;
+  background-color: #000;
+}
+
+.video-caption {
+  padding: 16px;
+  text-align: center;
+}
+
+.caption-text {
+  font-size: 0.8rem;
+  color: #333333;
+  font-weight: 500;
+  margin: 0;
+}
+
+@media (min-width: 768px) {
+  .video-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+
 .paper-description {
     line-height: 1.6;
 }
